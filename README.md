@@ -12,3 +12,15 @@ Usage inside a widget:
 ```
 
 Requires elements `#w` (with child `#lb`) and `#n` on the page.
+
+## HD engine (`engine-hd.js`)
+
+Same API (`DMAP(M)`), higher-fidelity rendering: procedural textures, ACES tone mapping, soft shadows,
+environment lighting, animated water, miniature-style characters.
+
+Extra data fields:
+- `mood`: "day" (default) | "dusk" | "night" | "cave" | "hell"
+- items: `ground` {x,y,w,d,c,amp,seed,flat:[[x,y,r]]} height-mapped terrain; `blob` {x,y,w,d,h,c,seed,rough,rot} organic mass;
+  `rock` {x,y,r,h}; `scatter` {kind:"grass"|"rock"|"bush"|"debris",x,y,w,d,n,seed}
+- models: pawn, orc, gith, halfelf, human, paleelf, wizard, tiefling(skin), goblin, brain, imp, mindflayer, cambion, boar
+- tokens and items without `z` sit on `ground` height automatically.
