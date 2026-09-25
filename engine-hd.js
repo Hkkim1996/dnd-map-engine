@@ -227,7 +227,9 @@ const HUM=(g,o)=>{const k=o.H/1.8,b=o.bulk||1,hs=o.headS||1,Y=v=>v*k,S=pm(o.skin
  const sh=[-1,1].map(s=>V(0,Y(1.36),s*.2*b)),el=[V(.03,Y(1.12),-.25*b),V(.06,Y(1.13),.25*b)],hd=[V(.12,Y(.94),-.22*b),V(.17,Y(.96),.21*b)];
  [0,1].forEach(i=>{seg(g,sh[i],el[i],.062*b,.054*b,AR);seg(g,el[i],hd[i],.052*b,.044*b,o.forearm!=null?pm(o.forearm,{roughness:.8}):AR);part(g,sphG(),o.glove!=null?pm(o.glove):S,hd[i].x,hd[i].y,hd[i].z,.05*b)});
  return{k,b,hs,Y,S,T:Tm,head:V(.005,Y(1.64),0),hand:hd[1],handL:hd[0],sh}};
-const hair=(g,h,c,o)=>{const m=pm(c,{roughness:.85}),y=h.head.y;o=o||{};part(g,hemiG(),m,-.015*h.hs,y+.005,0,.108*h.hs,(o.capH||.12)*h.hs,.1*h.hs,0,0,.22);if(o.back!==false)part(g,sphG(),m,-.036*h.hs,y-.01*h.hs,0,.086*h.hs,.112*h.hs,.097*h.hs);return m};
+const hair=(g,h,c,o)=>{const m=pm(c,{roughness:.85}),y=h.head.y,hs=h.hs;o=o||{};const tl=o.tilt==null?.48:o.tilt,key="hc"+tl;
+ if(!GC[key]){const gg=new T3.SphereGeometry(1,SEG,SEG,0,PI*2,0,1.61);gg.rotateZ(tl);GC[key]=gg}
+ part(g,GC[key],m,.005,y,0,.108*hs,.132*hs,.102*hs);return m};
 const blade=(g,a,dir,len,w,m,guard)=>{const d=dir.clone().normalize(),q=new T3.Quaternion().setFromUnitVectors(V(0,1,0),d),bl=new T3.Mesh(new T3.BoxGeometry(w,len,.012),m);bl.quaternion.copy(q);bl.position.copy(a).addScaledVector(d,len/2+.12);bl.castShadow=true;g.add(bl);
  const tip=new T3.Mesh(coneG(4),m);tip.scale.set(w*.7,w*1.6,.012);tip.quaternion.copy(q);tip.position.copy(a).addScaledVector(d,len+.12+w*.8);g.add(tip);
  if(guard!==false){const gd=new T3.Mesh(boxG(),pm(0x8A6A3A,{metalness:.7,roughness:.35}));gd.scale.set(.03,.03,w*4.5);gd.quaternion.copy(q);gd.position.copy(a).addScaledVector(d,.11);g.add(gd)}
@@ -238,7 +240,7 @@ pawn:(g,c)=>{const m=pm(c,{roughness:.45,metalness:.1});part(g,lat([[0,0],[.3,0]
 orc:g=>{const h=HUM(g,{H:2.0,bulk:1.32,skin:0x72905A,top:0x6B4A2E,topM:{tex:"leather",bs:.01},bottom:0x4A3526,boots:0x2A1E16,sleeve:null,forearm:0x5A3A22}),HR=pm(0x17120F,{roughness:.9}),b=h.b,y=h.head.y,L=pm(0x5A3E26,{tex:"leather",bs:.01,roughness:.75});
  part(g,cylG(),pm(0x2E2014,{roughness:.6}),0,h.Y(.97),0,.12*b,.07,.165*b);part(g,boxG(),MET(0x9A8A60),.12*b,h.Y(.97),0,.02,.06,.07);
  [-1,1].forEach(s=>part(g,hemiG(),L,0,h.Y(1.37),s*.2*b,.1*b,.08,.11*b,0,0,s*-.35));
- hair(g,h,0x17120F,{capH:.1});part(g,sphG(),HR,-.02,y+.13,0,.055);part(g,cylG(),pm(0x6A4A2A),-.02,y+.085,0,.03,.03,.03);
+ hair(g,h,0x17120F,{tilt:.55});part(g,sphG(),HR,-.02,y+.13,0,.055);part(g,cylG(),pm(0x6A4A2A),-.02,y+.085,0,.03,.03,.03);
  const bd=part(g,lat([[0,.02],[.085,.02],[.1,-.05],[.075,-.14],[.03,-.2],[0,-.21]]),HR,.04,y-.02,0,1);bd.scale.set(.85,1,1.05);bd.rotation.z=.22;
  part(g,boxG(),HR,.105,y-.035,0,.02,.02,.11);
  [-1,1].forEach(s=>part(g,coneG(6),pm(0xEEE6CC,{roughness:.4}),.105,y-.02,s*.042,.012,.05,.012,0,0,-.2));
@@ -250,20 +252,20 @@ gith:g=>{const h=HUM(g,{H:1.9,bulk:.92,skin:0xB4B868,top:0x8A6A3A,topM:{metalnes
  [-1,1].forEach(s=>{const p=part(g,coneG(4),BZ,0,h.Y(1.42),s*.23*b,.12,.16,.1,s*.9,0,0)});
  part(g,cylG(),MET(0x6A5030),0,h.Y(.97),0,.11*b,.06,.15*b);
  [-1,1].forEach(s=>part(g,coneG(4),h.S,-.03,y+.03,s*.09,.018,.14,.03,s*1.25,0,.7));
- hair(g,h,0x5A2418,{capH:.11});tube([V(-.02,y+.11,0),V(-.06,y+.24,0),V(-.16,y+.23,0),V(-.2,y+.08,0)],.04,.018,Hm,g);
+ hair(g,h,0x5A2418);tube([V(-.02,y+.11,0),V(-.06,y+.24,0),V(-.16,y+.23,0),V(-.2,y+.08,0)],.04,.018,Hm,g);
  const a=V(h.hand.x,h.hand.y,h.hand.z-.05);blade(g,a,V(.25,1,-.08),.82,.045,MET(0xD8DEE4));
  return 2.2},
 halfelf:g=>{const h=HUM(g,{H:1.76,bulk:.86,skin:0xD9B8A2,top:0xA8AEB6,topM:{metalness:.6,roughness:.45,tex:"chain",bs:.006},bottom:0x2E2A30,boots:0x3A2A22,sleeve:0xA8AEB6,sleeveM:{metalness:.6,roughness:.45,tex:"chain",bs:.006}}),y=h.head.y,b=h.b,HR=pm(0x121014,{roughness:.8});
  part(g,cylG(),pm(0x3A2A1E),0,h.Y(.97),0,.11*b,.05,.15*b);part(g,sphG(),pm(0x6A4A2A,{roughness:.8}),.1*b,h.Y(.92),.1*b,.05);
  [-1,1].forEach(s=>part(g,coneG(4),h.S,-.01,y+.02,s*.09,.014,.07,.02,s*1.3,0,.5));
- hair(g,h,0x121014,{capH:.125});tube([V(-.09,y+.05,0),V(-.13,y-.06,0),V(-.13,y-.22,0)],.035,.02,HR,g);
+ hair(g,h,0x121014,{tilt:.42});tube([V(-.09,y+.05,0),V(-.13,y-.06,0),V(-.13,y-.22,0)],.035,.02,HR,g);
  const a=h.hand;seg(g,V(a.x,a.y-.08,a.z),V(a.x+.08,a.y+.4,a.z),.018,.018,pm(0x3A2A1E));part(g,sphG(),MET(0x8A8F96),a.x+.09,a.y+.44,a.z,.065);
  [0,1,2,3].forEach(i=>part(g,boxG(),MET(0x8A8F96),a.x+.09,a.y+.44,a.z,.02,.12,.13,0,i*PI/4,0));
  return 1.95},
 human:(g,c,t)=>{const rb=(t&&t.robe)||0x6A6A70,h=HUM(g,{H:1.76,bulk:.95,skin:0xD9B08C,top:rb,bottom:rb,sleeve:rb,robe:true});hair(g,h,0x4A3222);part(g,cylG(),pm(0x3A2A1E),0,h.Y(1.0),0,.12,.05,.16);return 1.95},
 paleelf:g=>{const h=HUM(g,{H:1.8,bulk:.82,skin:0xE6D6D0,top:0x4A1620,topM:{tex:"leather",bs:.008},bottom:0x1C181C,boots:0x121012,sleeve:0x241C22,eye:0x8A1020,eyeE:0x400008}),y=h.head.y,HM=pm(0xEEEAE2,{roughness:.8});
  [-1,1].forEach(s=>part(g,coneG(4),h.S,-.02,y+.03,s*.09,.016,.12,.024,s*1.3,0,.6));
- [[-.02,.1,0],[.03,.1,.05],[.03,.1,-.05],[-.06,.08,.07],[-.06,.08,-.07],[-.08,.03,0],[.06,.08,0],[-.04,.11,.03]].forEach(p=>part(g,sphG(),HM,p[0],y+p[1],p[2],.045));
+ (hair(g,h,0xEEEAE2,{tilt:.42}),[[-.02,.1,0],[.03,.1,.05],[.03,.1,-.05],[-.06,.08,.07],[-.06,.08,-.07],[-.08,.03,0],[.06,.08,0],[-.04,.11,.03]]).forEach(p=>part(g,sphG(),HM,p[0],y+p[1],p[2],.045));
  part(g,lat([[.07,0],[.075,.08],[.1,.14]]),pm(0x1C181C),0,h.Y(1.43),0,1);
  blade(g,h.hand,V(.4,1,.05),.8,.018,MET(0xDCE2E8));part(g,new T3.TorusGeometry(.05,.008,6,12),MET(0xB09050),h.hand.x+.02,h.hand.y+.06,h.hand.z,1);
  return 2.0},
