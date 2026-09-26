@@ -20,7 +20,9 @@ environment lighting, animated water, miniature-style characters.
 
 Extra data fields:
 - `mood`: "day" (default) | "dusk" | "night" | "cave" | "hell"
+- `view`: camera azimuth in degrees (0 = from east, 90 = from south; default 45 = south-east)
 - items: `ground` {x,y,w,d,c,amp,seed,flat:[[x,y,r]]} height-mapped terrain; `blob` {x,y,w,d,h,c,seed,rough,rot} organic mass;
-  `rock` {x,y,r,h}; `scatter` {kind:"grass"|"rock"|"bush"|"debris",x,y,w,d,n,seed}
-- models: pawn, orc, gith, halfelf, human, paleelf, wizard, tiefling(skin), goblin, brain, imp, mindflayer, cambion, boar
+  `rock` {x,y,r,h}; `scatter` {kind:"grass"|"rock"|"bush"|"debris",x,y,w,d,n,seed};
+  `windmill` {x,y,h,r,f,rot,L,sw,c,rc,torn,tied:{m,n,t,s,blade,at}} tower mill facing `f` (deg) with four sails at angle `rot`; `tied` straps a figure to a sail
+- models: pawn, orc, gith, halfelf, human, paleelf, wizard, tiefling(skin), goblin(wpn:"axe" for a dragged greataxe), gnome(skin), brain, imp, mindflayer, cambion, boar
 - tokens and items without `z` sit on `ground` height automatically.

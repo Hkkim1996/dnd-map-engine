@@ -112,7 +112,7 @@ const V=(x,y,z)=>new T3.Vector3(x,y,z);
 const PMC={};
 const pm=(c,o)=>{const k=c+"|"+JSON.stringify(o||{});if(PMC[k])return PMC[k];const p=Object.assign({roughness:.7,metalness:0},o||{});
  if(p.tex){const t=mkTex(p.tex);delete p.tex;p.bumpMap=t.bump;p.bumpScale=p.bs||.01;delete p.bs}
- if(p.em){p.emissive=col(p.em);p.emissiveIntensity=p.ei||1;delete p.em;delete p.ei}
+ if("em" in p){if(p.em){p.emissive=col(p.em);p.emissiveIntensity=p.ei||1}delete p.em;delete p.ei}
  return PMC[k]=new T3.MeshStandardMaterial(Object.assign(p,{color:col(c)}))};
 const part=(g,geo,m,x,y,z,sx,sy,sz,rx,ry,rz)=>{const me=new T3.Mesh(geo,m);me.position.set(x,y,z);me.scale.set(sx,sy==null?sx:sy,sz==null?sx:sz);if(rx||ry||rz)me.rotation.set(rx||0,ry||0,rz||0);me.castShadow=true;me.receiveShadow=true;g.add(me);return me};
 const seg=(g,a,b,r1,r2,m,cap)=>{const d=V(0,0,0).subVectors(b,a),L=d.length();if(L<1e-4)return;const me=new T3.Mesh(new T3.CylinderGeometry(r2,r1,L,SMALL?8:12,1),m);
@@ -137,7 +137,7 @@ const heightAt=(x,y)=>{for(const o of GR)if(x>=o.x&&x<=o.x+o.w&&y>=o.y&&y<=o.y+o
 const baseZ=o=>o.z!=null?o.z:heightAt(o.x,o.y);
 
 /* ---------- scene items ---------- */
-const labels=[],anim=[],lights=[];let PL=0;
+const labels=[],anim=[],lights=[],POST=[];let PL=0;
 const add=(geo,k,x,y,z,cast=1,uvT)=>{const m=mat(k);if(uvT!==false&&m.userData.t&&geo.attributes.uv)wuv(geo,m.userData.t,[x,y,z]);const me=new T3.Mesh(geo,m);me.position.set(x,y,z);me.castShadow=!!cast;me.receiveShadow=true;sc.add(me);return me};
 const lab=(x,y,z,t)=>{if(t)labels.push([x,y,z,t])};
 const IT={
@@ -202,7 +202,31 @@ scatter:o=>{const R=rnd(o.seed||(o.x*31+o.y*17+7)|0),n=Math.min(o.n||20,SMALL?15
  else{geo=boxG();m=Math.random()<.5?mat("fleshdark"):mat("chitin");sz=[.12,.35]}
  const im=new T3.InstancedMesh(geo,m,n),d=new T3.Object3D();
  for(let i=0;i<n;i++){const x=o.x+R()*o.w,y=o.y+R()*o.d,s=sz[0]+R()*(sz[1]-sz[0]);d.position.set(x,heightAt(x,y)+(kind=="bush"?s*.35:kind=="rock"?s*.2:0),y);d.rotation.set(kind=="debris"?R()*3:0,R()*PI*2,kind=="debris"?R()*3:0);d.scale.set(s,kind=="bush"?s*.75:s,s);d.updateMatrix();im.setMatrixAt(i,d.matrix)}
- im.castShadow=shadow;im.receiveShadow=true;sc.add(im)}
+ im.castShadow=shadow;im.receiveShadow=true;sc.add(im)},
+windmill:o=>{/* {x,y,h,r,f(facing deg, 0=east 90=south),rot(sail angle deg),L(sail length),c,rc,torn,tied:{m,n,t,s,blade,at}} */
+ const z=baseZ(o),h=o.h||7,r=o.r||2.2,L=o.L||h*.75,g=new T3.Group();g.position.set(o.x,z,o.y);g.rotation.y=-(o.f||0)*PI/180;sc.add(g);
+ const rAt=y=>y<h*.1?r+(r*.96-r)*y/(h*.1):r*.96+(r*.74-r*.96)*(y-h*.1)/(h*.9);
+ const wm=mat(o.c||"stone"),tg=lat([[r,0],[r*.96,h*.1],[r*.74,h],[0,h]],SEG*2);if(wm.userData.t)wuv(tg,wm.userData.t,[0,0,0]);const tw=new T3.Mesh(tg,wm);tw.castShadow=tw.receiveShadow=true;g.add(tw);
+ const rm=mat(o.rc||"roof2"),rg=lat([[r*.86,0],[r*.82,h*.07],[r*.5,h*.2],[0,h*.3]],SEG*2);wuv(rg,3,[0,0,0]);const rf=new T3.Mesh(rg,rm);rf.position.y=h;rf.castShadow=rf.receiveShadow=true;g.add(rf);
+ part(g,cylG(),pm(0x4A3220,{tex:"plank",bs:.01}),0,h+.02,0,r*.8,.08,r*.8);
+ const DW=pm(0x3A2414,{tex:"plank",bs:.01,roughness:.8}),DK=pm(0x141210,{roughness:1});
+ part(g,boxG(),DW,rAt(.95)+.01,.95,0,.12,1.9,1.05);part(g,boxG(),pm(0x2A2A2C,{metalness:.7,roughness:.4}),rAt(.95)+.08,.95,.35,.04,.08,.12);
+ [[h*.5,0],[h*.35,PI/2],[h*.6,-PI/2]].forEach(([wy,wa])=>{const rr=rAt(wy)+.01,w=part(g,boxG(),DK,Math.cos(wa)*rr,wy,-Math.sin(wa)*rr,.1,.55,.4);w.rotation.y=wa});
+ const SW=o.sw||L*.2,hy=h*.84,hx=r+.3,WD=pm(0x6A4A2E,{tex:"plank",bs:.015,roughness:.85}),CL=pm(0xCFC3A4,{tex:"cloth",bs:.004,roughness:.95,side:T3.DoubleSide});
+ const ax0=rAt(hy)-.15;part(g,cylG(),WD,(ax0+hx)/2,hy,0,.14,hx-ax0,.14,0,0,PI/2);part(g,sphG(),WD,hx+.12,hy,0,.2);
+ const sg=new T3.Group();sg.position.set(hx+.12,hy,0);sg.rotation.x=(o.rot||0)*PI/180;g.add(sg);const blades=[];
+ for(let i=0;i<4;i++){const bg=new T3.Group();bg.rotation.x=i*PI/2;sg.add(bg);blades.push(bg);
+  part(bg,boxG(),WD,0,L/2,0,.09,L,.12);
+  const tn=o.torn!=null&&o.torn==i,cl=tn?.3:.72;
+  part(bg,boxG(),WD,.04,L*.6,SW,.04,L*.72,.05);
+  for(let k=0;k<6;k++)part(bg,boxG(),WD,.04,L*(.25+k*.14),SW/2,.035,.045,SW);
+  part(bg,boxG(),CL,.07,L*(.24+cl/2),SW/2,.012,L*cl,SW*.92)}
+ lab(o.x,z+h*1.32,o.y,o.n);
+ if(o.tied){const tt=o.tied;POST.push(()=>{const bg=blades[(tt.blade||0)%4],fm=FIG[tt.m]?tt.m:"pawn",cc=T[tt.t]||T.npc,s=(tt.s||1)*(M.ts||1),fg=new T3.Group(),at=L*(tt.at==null?.45:tt.at);
+  const fh=(FIG[fm](fg,cc,tt)||1.2)*s;fg.scale.setScalar(s);fg.position.set(.2,at,0);bg.add(fg);
+  const RP=pm(0x8A6A40,{roughness:.9});[.12,.46,.7].forEach(q=>{const rg2=new T3.Mesh(new T3.TorusGeometry(.17*s,.02,5,SEG),RP);rg2.rotation.x=PI/2;rg2.scale.set(1.5,1,1);rg2.position.set(.12,at+fh*q,0);rg2.castShadow=true;bg.add(rg2)});
+  fg.traverse(q=>{if(q.isMesh){q.castShadow=true;q.receiveShadow=true}});
+  g.updateMatrixWorld(true);const wp=fg.localToWorld(V(0,fh/s*.5,0));if(tt.n)labels.push([wp.x,wp.y+.45,wp.z,tt.n,cc])})}}
 };
 function water(o){const z=o.z||0,h=o.h||.3,top=z+h,m=mat("water");
  const pg=new T3.PlaneGeometry(o.w,o.d,1,1);pg.rotateX(-PI/2);const U=pg.attributes.uv,P=pg.attributes.position;for(let i=0;i<P.count;i++)U.setXY(i,(P.getX(i)+o.x+o.w/2)/3.5,(P.getZ(i)+o.y+o.d/2)/3.5);
@@ -277,11 +301,19 @@ wizard:g=>{const h=HUM(g,{H:1.8,bulk:.95,skin:0xD9B08C,top:0x4B2E83,bottom:0x4B2
 tiefling:(g,c,t)=>{const sk=(t&&t.skin)||0xA8433A,h=HUM(g,{H:1.78,bulk:.9,skin:sk,top:0x5A4A32,bottom:0x3A3A2E,sleeve:0x4A3E2A,eye:0xE8C040,eyeE:0x6A4A00}),y=h.head.y,HN=pm(0x2A2020,{roughness:.6});
  hair(g,h,0x1A1418);[-1,1].forEach(s=>tube([V(.03,y+.09,s*.06),V(-.02,y+.18,s*.1),V(-.12,y+.16,s*.12),V(-.14,y+.05,s*.1)],.03,.01,HN,g));
  tube([V(-.1,h.Y(.95),0),V(-.3,h.Y(.6),0),V(-.35,h.Y(.2),.1),V(-.22,h.Y(.1),.2)],.035,.01,h.S,g);return 2.0},
-goblin:g=>{const h=HUM(g,{H:1.05,bulk:.85,skin:0x7A8F4A,top:0x5A4430,topM:{tex:"leather",bs:.01},bottom:0x4A3A28,boots:0x2A2018,headS:1.5,eye:0xE0C030,eyeE:0x6A5000}),y=h.head.y,hs=h.hs;
+goblin:(g,c,t)=>{const h=HUM(g,{H:1.05,bulk:.85,skin:0x7A8F4A,top:0x5A4430,topM:{tex:"leather",bs:.01},bottom:0x4A3A28,boots:0x2A2018,headS:1.5,eye:0xE0C030,eyeE:0x6A5000}),y=h.head.y,hs=h.hs;
  [-1,1].forEach(s=>part(g,coneG(4),h.S,-.02,y+.02,s*.12*hs,.03,.2,.05,s*1.45,0,.2));
  part(g,coneG(6),h.S,.14*hs*.75,y-.02,0,.02,.07,.02,0,0,-1.3);
- const a=h.hand,m=MET(0xA0A4A8),grp=new T3.Group();grp.position.copy(a);g.add(grp);ext([[0,0],[.03,.1,.02,.42],[-.03,.4],[-.02,.1,-.02,0]],.012,m,grp);seg(g,V(a.x,a.y-.06,a.z),V(a.x,a.y+.03,a.z),.014,.014,pm(0x3A2A1A));
+ const a=h.hand;
+ if(t&&t.wpn=="axe"){/* greataxe as tall as the goblin, dragged behind */const top=V(a.x+.1,a.y+.16,a.z),e=V(a.x-.6,.07,a.z+.14);seg(g,top,e,.024,.02,pm(0x4A3020,{roughness:.8}));
+  const hg=new T3.Group();hg.position.copy(e).lerp(top,.12);hg.quaternion.setFromUnitVectors(V(0,1,0),top.clone().sub(e).normalize());hg.rotateY(PI/2);g.add(hg);
+  const ax=MET(0x8A8E92);[-1,1].forEach(s=>ext([[0,.05],[s*.13,.18,s*.26,.18],[s*.21,0,s*.26,-.18],[s*.13,-.18,0,-.05]],.02,ax,hg,.003))}
+ else{const m=MET(0xA0A4A8),grp=new T3.Group();grp.position.copy(a);g.add(grp);ext([[0,0],[.03,.1,.02,.42],[-.03,.4],[-.02,.1,-.02,0]],.012,m,grp);seg(g,V(a.x,a.y-.06,a.z),V(a.x,a.y+.03,a.z),.014,.014,pm(0x3A2A1A))}
  return 1.35},
+gnome:(g,c,t)=>{/* deep gnome: small, grey stone skin, bald, big nose */const h=HUM(g,{H:1.0,bulk:.8,skin:(t&&t.skin)||0x8E8C88,top:0x5A4E42,topM:{tex:"leather",bs:.008},bottom:0x3E3630,boots:0x2A2420,headS:1.45,eye:0x141414}),y=h.head.y,hs=h.hs;
+ part(g,sphG(),h.S,.1*hs+.012,y-.015,0,.042,.036,.032);
+ [-1,1].forEach(s=>part(g,coneG(4),h.S,-.01,y+.01,s*.1*hs,.024,.12,.04,s*1.4,0,.3));
+ return 1.22},
 brain:g=>{const pk=pm(0xD98A9A,{roughness:.35,tex:"flesh",bs:.015}),geo=new T3.SphereGeometry(1,SMALL?14:22,SMALL?10:16),P=geo.attributes.position;
  for(let i=0;i<P.count;i++){const x=P.getX(i),y=P.getY(i),z=P.getZ(i),f=1+.07*Math.abs(Math.sin(x*9+fbm(x*2,z*2,5,2)*6)*Math.sin(y*7+z*5));P.setXYZ(i,x*f,y*f,z*f)}geo.computeVertexNormals();
  [-1,1].forEach(s=>part(g,geo,pk,0,.56,s*.11,.34,.24,.2));part(g,boxG(),pm(0x8A3A4A),0,.72,0,.62,.08,.02);
@@ -314,8 +346,9 @@ FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,gnome:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
+POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
  const h=FIG[m](body,col_,t)||1.8;body.scale.setScalar(sz);hold.add(body);g.add(hold);
  if(t.lie){body.rotation.z=PI/2;body.position.set(h*sz/2,.22*sz,0)}else{const R=(RR[m]||.42)*sz;
@@ -327,18 +360,23 @@ TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]
 /* ---------- lights & camera ---------- */
 sc.add(new T3.HemisphereLight(col(MD.sky),col(MD.gnd),MD.hi));
 const dl=new T3.DirectionalLight(col(MD.sun),MD.si);dl.castShadow=true;const SMS=SMALL?1024:2048;dl.shadow.mapSize.set(SMS,SMS);dl.shadow.bias=-.0004;dl.shadow.normalBias=.03;
-const bb=new T3.Box3().setFromObject(sc);if(bb.isEmpty())bb.set(V(-5,0,-5),V(5,2,5));
+const bb=new T3.Box3(),BXS=[];sc.updateMatrixWorld(true);sc.children.forEach(c=>{if(c.isInstancedMesh||c.isLight)return;const b=new T3.Box3().expandByObject(c);if(!b.isEmpty()){BXS.push(b);bb.union(b)}});if(bb.isEmpty()){bb.set(V(-5,0,-5),V(5,2,5));BXS.push(bb.clone())}
 const ctr=bb.getCenter(V(0,0,0)),rad=Math.max(2,bb.getBoundingSphere(new T3.Sphere()).radius);
 dl.position.copy(ctr).add(V(-.3,1,.8).normalize().multiplyScalar(rad*2.2));dl.target.position.copy(ctr);
 Object.assign(dl.shadow.camera,{left:-rad,right:rad,top:rad,bottom:-rad,near:.1,far:rad*5});dl.shadow.camera.updateProjectionMatrix();sc.add(dl,dl.target);
 W.prepend(rw.domElement);rw.domElement.style.display="block";
-const cam=new T3.OrthographicCamera(-1,1,1,-1,.1,rad*12);cam.position.copy(ctr).add(V(1,.95,1).normalize().multiplyScalar(rad*3));
+const VA=(M.view==null?45:M.view)*PI/180,cam=new T3.OrthographicCamera(-1,1,1,-1,.1,rad*12);cam.position.copy(ctr).add(V(Math.SQRT2*Math.cos(VA),.95,Math.SQRT2*Math.sin(VA)).normalize().multiplyScalar(rad*3));
 const ctl=T3.OrbitControls?new T3.OrbitControls(cam,rw.domElement):null;if(ctl){ctl.target.copy(ctr);ctl.enablePan=false;ctl.maxPolarAngle=1.35;ctl.minZoom=.6;ctl.maxZoom=5;ctl.enableDamping=false}
-cam.lookAt(ctr);cam.updateMatrixWorld();const cs=[];for(const X of[bb.min.x,bb.max.x])for(const Y of[bb.min.y,bb.max.y])for(const Z of[bb.min.z,bb.max.z])cs.push(V(X,Y,Z).applyMatrix4(cam.matrixWorldInverse));
-const ex=Math.max(...cs.map(v=>Math.abs(v.x))),ey=Math.max(...cs.map(v=>Math.abs(v.y)))+.6;
+cam.lookAt(ctr);cam.updateMatrixWorld();const cs=[];BXS.forEach(b=>{for(const X of[b.min.x,b.max.x])for(const Y of[b.min.y,b.max.y])for(const Z of[b.min.z,b.max.z])cs.push(V(X,Y,Z).applyMatrix4(cam.matrixWorldInverse))});
+/* re-center on the projected scene so tall objects at the back don't waste space */
+const mnx=Math.min(...cs.map(v=>v.x)),mxx=Math.max(...cs.map(v=>v.x)),mny=Math.min(...cs.map(v=>v.y)),mxy=Math.max(...cs.map(v=>v.y));
+const shv=V(1,0,0).applyQuaternion(cam.quaternion).multiplyScalar((mnx+mxx)/2).add(V(0,1,0).applyQuaternion(cam.quaternion).multiplyScalar((mny+mxy)/2+.3));
+ctr.add(shv);cam.position.add(shv);cam.updateMatrixWorld();if(ctl)ctl.target.copy(ctr);
+const ex=(mxx-mnx)/2,ey=(mxy-mny)/2+.6;
 const fit=()=>{const w=W.clientWidth||680,h=W.clientHeight||440,a=w/h;let hx=ex*1.04,hy=ey*1.06;if(hx/hy>a)hy=hx/a;else hx=hy*a;cam.left=-hx;cam.right=hx;cam.top=hy;cam.bottom=-hy;cam.updateProjectionMatrix();rw.setSize(w,h)};
 let dirty=true;
-const drawLabels=()=>{const w=W.clientWidth||680,h=W.clientHeight||440,occ=[];let s="";[...labels].sort((p,q)=>(q[4]!==undefined)-(p[4]!==undefined)).forEach(([x,y,z,t,c])=>{const p=V(x,y,z).project(cam),px=(p.x+1)/2*w,py=(1-p.y)/2*h,lw=[...t].reduce((a,ch)=>a+(ch.charCodeAt(0)>0x3000?12.5:7),0)+12;let X=px-lw/2,Y=py-24;for(let i=0;i<6&&occ.some(q=>!(X+lw<q[0]||X>q[2]||Y+19<q[1]||Y>q[3]));i++)Y-=21;occ.push([X,Y,X+lw,Y+19]);
+const drawLabels=()=>{const w=W.clientWidth||680,h=W.clientHeight||440,occ=[];let s="";[...labels].sort((p,q)=>(q[4]!==undefined)-(p[4]!==undefined)).forEach(([x,y,z,t,c])=>{const p=V(x,y,z).project(cam),px=(p.x+1)/2*w,py=(1-p.y)/2*h,lw=[...t].reduce((a,ch)=>a+(ch.charCodeAt(0)>0x3000?12.5:7),0)+12;const hit=(X,Y)=>occ.some(q=>!(X+lw<q[0]||X>q[2]||Y+19<q[1]||Y>q[3]));let X=px-lw/2,Y=py-24;
+ search:for(let i=0;i<6;i++)for(const dx of[0,lw/2+4,-(lw/2+4)]){if(!hit(px-lw/2+dx,py-24-i*21)){X=px-lw/2+dx;Y=py-24-i*21;break search}if(i==5&&dx==0){X=px-lw/2;Y=py-24-i*21}}occ.push([X,Y,X+lw,Y+19]);
  s+=`<div style="position:absolute;left:${X}px;top:${Y}px;background:rgba(255,255,255,.92);color:#2C2C2A;font-size:12px;line-height:19px;padding:0 6px;border-radius:4px;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.15);${c!==undefined?"border-left:3px solid #"+c.toString(16).padStart(6,"0"):""}">${t}</div>`});if(LB)LB.innerHTML=s};
 const render=()=>{rw.render(sc,cam);if(dirty){drawLabels();dirty=false}};
 if(ctl)ctl.addEventListener("change",()=>{dirty=true;if(!anim.length)render()});
