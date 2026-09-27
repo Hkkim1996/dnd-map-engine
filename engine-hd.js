@@ -333,6 +333,13 @@ warg:(g,c,t)=>{/* warg: big dark wolf, shaggy mane, long snout, pale fangs, yell
  [-1,1].forEach(s=>{part(g,coneG(4),fr,.56,1.0,s*.08,.045,.14,.035,s*.2,0,-.15);part(g,sphG(),pm(0xFFD040,{em:0xFFA000,ei:1.4}),.74,.86,s*.075,.022);[.76,.92].forEach(x=>part(g,coneG(6),pm(0xEEE6CC,{roughness:.4}),x,.72,s*.05,.012,.06,.012,PI,0,0))});
  tube([V(-.55,.72,0),V(-.8,.62,0),V(-.95,.42,0),V(-1.02,.3,0)],.07,.035,mn,g);
  return 1.1},
+bear:(g,c,t)=>{/* cave bear: huge brown bear, shoulder hump, round ears, short snout, thick legs, pale claws */const fr=pm((t&&t.skin)||0x5A3A22,{tex:"leather",bs:.02,roughness:.92}),dk=pm(0x2A1A10,{roughness:.9}),mz=pm(0x7A5A3A,{roughness:.9});
+ [[.48,.26],[.48,-.26],[-.46,.26],[-.46,-.26]].forEach(([x,z])=>{seg(g,V(x,.8,z),V(x+.03,.12,z*1.04),.15,.12,fr);part(g,sphG(),dk,x+.07,.08,z*1.04,.13,.08,.12);[-1,0,1].forEach(k=>part(g,coneG(4),pm(0xE8DEC0,{roughness:.4}),x+.2,.05,z*1.04+k*.05,.015,.07,.015,0,0,-PI/2))});
+ part(g,sphG(),fr,0,.95,0,.82,.5,.46);part(g,sphG(),fr,.3,1.2,0,.42,.36,.4);part(g,sphG(),fr,-.55,.92,0,.36,.38,.38);
+ part(g,sphG(),fr,.88,1.08,0,.26,.24,.25);part(g,sphG(),mz,1.1,1.02,0,.16,.12,.13);part(g,sphG(),dk,1.25,1.04,0,.05,.045,.06);
+ [-1,1].forEach(s=>{part(g,sphG(),fr,.8,1.32,s*.17,.08,.08,.05);part(g,sphG(),dk,.81,1.32,s*.17,.045,.045,.03);part(g,sphG(),pm(0xC89A40,{em:0x6A4A10,ei:.6}),1.06,1.13,s*.1,.025)});
+ part(g,sphG(),fr,-.95,.95,0,.08,.08,.08);
+ return 1.6},
 brain:g=>{const pk=pm(0xD98A9A,{roughness:.35,tex:"flesh",bs:.015}),geo=new T3.SphereGeometry(1,SMALL?14:22,SMALL?10:16),P=geo.attributes.position;
  for(let i=0;i<P.count;i++){const x=P.getX(i),y=P.getY(i),z=P.getZ(i),f=1+.07*Math.abs(Math.sin(x*9+fbm(x*2,z*2,5,2)*6)*Math.sin(y*7+z*5));P.setXYZ(i,x*f,y*f,z*f)}geo.computeVertexNormals();
  [-1,1].forEach(s=>part(g,geo,pk,0,.56,s*.11,.34,.24,.2));part(g,boxG(),pm(0x8A3A4A),0,.72,0,.62,.08,.02);
@@ -365,7 +372,7 @@ FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,gnome:.3,ogre:.78,warg:.62,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,gnome:.3,ogre:.78,warg:.62,bear:.95,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
