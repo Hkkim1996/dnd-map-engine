@@ -324,6 +324,15 @@ ogre:(g,c,t)=>{/* ogre: huge, pot belly, hide loincloth, small head, underbite t
  const a=h.hand,tp=V(a.x+.28,a.y+1.15,a.z+.05),WD=pm(0x5A3A20,{tex:"plank",bs:.02,roughness:.9});seg(g,V(a.x-.04,a.y-.18,a.z),tp,.05,.14,WD);
  [[.4,.2],[.6,-.3],[.8,.9],[.9,2.3],[.55,1.6],[.7,3.4]].forEach(([q,r])=>{const p=V(a.x-.04,a.y-.18,a.z).lerp(tp,q);part(g,coneG(4),MET(0x7A7470),p.x+Math.cos(r)*.09,p.y,p.z+Math.sin(r)*.09,.025,.1,.025,Math.sin(r)*1.4,0,-Math.cos(r)*1.4)});
  return 3.2},
+warg:(g,c,t)=>{/* warg: big dark wolf, shaggy mane, long snout, pale fangs, yellow eyes */const fr=pm((t&&t.skin)||0x3A3632,{tex:"leather",bs:.02,roughness:.9}),dk=pm(0x1E1C1A,{roughness:.9}),mn=pm(0x26221F,{roughness:.95});
+ [[.36,.17],[.36,-.17],[-.36,.17],[-.36,-.17]].forEach(([x,z])=>{seg(g,V(x,.55,z),V(x+.04,.25,z*1.05),.07,.055,fr);seg(g,V(x+.04,.25,z*1.05),V(x+.02,.03,z*1.05),.05,.04,dk)});
+ part(g,sphG(),fr,0,.66,0,.58,.3,.28);part(g,sphG(),mn,.3,.76,0,.3,.3,.3);
+ [0,1,2,3,4].forEach(i=>part(g,coneG(4),mn,.12+i*.09,.98,0,.05,.16,.05,0,0,-.3));
+ part(g,sphG(),fr,.62,.82,0,.19,.17,.17);part(g,boxG(),fr,.84,.77,0,.28,.12,.14);part(g,boxG(),dk,.99,.8,0,.05,.06,.07);
+ part(g,boxG(),pm(0x6A2020,{roughness:.6}),.84,.7,0,.24,.03,.1);
+ [-1,1].forEach(s=>{part(g,coneG(4),fr,.56,1.0,s*.08,.045,.14,.035,s*.2,0,-.15);part(g,sphG(),pm(0xFFD040,{em:0xFFA000,ei:1.4}),.74,.86,s*.075,.022);[.76,.92].forEach(x=>part(g,coneG(6),pm(0xEEE6CC,{roughness:.4}),x,.72,s*.05,.012,.06,.012,PI,0,0))});
+ tube([V(-.55,.72,0),V(-.8,.62,0),V(-.95,.42,0),V(-1.02,.3,0)],.07,.035,mn,g);
+ return 1.1},
 brain:g=>{const pk=pm(0xD98A9A,{roughness:.35,tex:"flesh",bs:.015}),geo=new T3.SphereGeometry(1,SMALL?14:22,SMALL?10:16),P=geo.attributes.position;
  for(let i=0;i<P.count;i++){const x=P.getX(i),y=P.getY(i),z=P.getZ(i),f=1+.07*Math.abs(Math.sin(x*9+fbm(x*2,z*2,5,2)*6)*Math.sin(y*7+z*5));P.setXYZ(i,x*f,y*f,z*f)}geo.computeVertexNormals();
  [-1,1].forEach(s=>part(g,geo,pk,0,.56,s*.11,.34,.24,.2));part(g,boxG(),pm(0x8A3A4A),0,.72,0,.62,.08,.02);
@@ -356,7 +365,7 @@ FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,gnome:.3,ogre:.78,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,gnome:.3,ogre:.78,warg:.62,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
