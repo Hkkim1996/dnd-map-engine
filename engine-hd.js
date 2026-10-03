@@ -397,6 +397,21 @@ hyena:(g,c,t)=>{/* hyena: tan spotted body sloping down to the rear, round ears,
  [-1,1].forEach(s=>{part(g,sphG(),fr,.44,.94,s*.08,.04,.06,.025);part(g,sphG(),pm(0xFFC040,{em:0xA06000,ei:1}),.6,.84,s*.06,.018)});
  tube([V(-.42,.55,0),V(-.55,.45,0),V(-.6,.32,0)],.04,.02,dk,g);
  return .98},
+fist:(g,c,t)=>{/* flaming fist: human mercenary in red tunic and steel breastplate; wing:1 adds grey leather wings (Marcus); wpn:"club" iron-banded great club */const h=HUM(g,{H:1.9,bulk:1.08,skin:(t&&t.skin)||0xD9B08C,top:0x9A2A20,topM:{roughness:.75},bottom:0x3A2A22,boots:0x241A14,sleeve:0x9A2A20}),y=h.head.y,b=h.b,ST=MET(0xA8ACB0);
+ part(g,lat([[0,0],[.165,0],[.2,.2],[.215,.42],[.16,.5],[0,.52]].map(p=>[p[0]*b,p[1]*h.k])),ST,0,h.Y(.95),0,1).scale.set(.8,1,1.04);
+ part(g,cylG(),pm(0x2E2014,{roughness:.6}),0,h.Y(.97),0,.13*b,.06,.17*b);hair(g,h,(t&&t.hair)||0x3A2418);
+ const a=h.hand;if(t&&t.wpn=="club"){const W=pm(0x4A3020,{roughness:.8});seg(g,V(a.x-.04,a.y-.18,a.z),V(a.x+.22,a.y+.75,a.z),.03,.05,W);part(g,cylG(),W,a.x+.27,a.y+.95,a.z,.1,.34,.1,0,0,-.27);[.82,1.08].forEach(k=>part(g,cylG(),MET(0x6A6A6A),a.x+.04+.27*k,a.y+k*.9,a.z,.115,.035,.115,0,0,-.27))}
+ else blade(g,a,V(.3,1,0),.75,.04,MET(0xD0D6DC));
+ if(t&&t.wing)[-1,1].forEach(s=>{const w=new T3.Group();w.position.set(-.16,h.Y(1.32),s*.1);w.rotation.y=s*PI/2+s*.35;w.rotation.x=s*-.15;g.add(w);ext([[0,0],[1.0,.8],[.9,.15],[.7,.36],[.55,-.1],[.32,.14]],.012,pm(0x5A5550,{roughness:.7,side:T3.DoubleSide}),w)});
+ return 2.05},
+horror:(g,c,t)=>{/* winged horror: gaunt grey hunched body, long clawed arms, hooked talon feet, big tattered leather wings */const sk=pm((t&&t.skin)||0x7A7670,{tex:"leather",bs:.015,roughness:.8}),dk=pm(0x2E2A28,{roughness:.7}),wg=pm(0x4A4440,{roughness:.75,side:T3.DoubleSide});
+ [-1,1].forEach(s=>{seg(g,V(-.05,.85,s*.12),V(.12,.5,s*.15),.06,.045,sk);seg(g,V(.12,.5,s*.15),V(-.02,.1,s*.15),.045,.03,sk);[-.5,0,.5].forEach(a=>part(g,coneG(5),dk,.04+.06*Math.cos(a),.06,s*.15+.05*Math.sin(a),.018,.1,.018,0,0,-1.3))});
+ part(g,sphG(),sk,0,1.05,0,.18,.32,.16,0,0,-.35);[.9,1.05,1.2].forEach(yy=>part(g,sphG(),dk,-.13,yy,0,.035));
+ seg(g,V(.1,1.3,0),V(.25,1.42,0),.05,.04,sk);part(g,sphG(),sk,.3,1.42,0,.12,.1,.09);part(g,boxG(),dk,.4,1.36,0,.1,.04,.07);
+ [-1,1].forEach(s=>part(g,sphG(),pm(0xD8E060,{em:0x908000,ei:1.4}),.4,1.46,s*.04,.018));[-1,0,1].forEach(s=>part(g,coneG(4),pm(0xE6E0C8),.45,1.33,s*.025,.01,.04,.01,PI,0,0));
+ [-1,1].forEach(s=>{const sh=V(.08,1.25,s*.17),el=V(.2,.95,s*.3),hd=V(.42,.85,s*.28);seg(g,sh,el,.04,.035,sk);seg(g,el,hd,.035,.025,sk);[-1,0,1].forEach(k=>part(g,coneG(4),dk,hd.x+.06,hd.y-.02,hd.z+k*.03,.012,.12,.012,0,0,-1.6))});
+ [-1,1].forEach(s=>{const w=new T3.Group();w.position.set(-.1,1.25,s*.12);w.rotation.y=s*PI/2+s*.25;w.rotation.x=s*-.25;g.add(w);ext([[0,0],[1.15,.85],[1.05,.2],[.82,.42],[.66,-.05],[.42,.22],[.25,-.1]],.012,wg,w)});
+ return 1.75},
 eye:(g,c,t)=>{/* watchful eye: floating bloodshot eyeball with violet iris and a dangling nerve */const y=1.75,R=.32,W=pm(0xEDE6DA,{roughness:.3}),VN=pm(0xB02828,{roughness:.5});
  part(g,sphG(),W,0,y,0,R);part(g,sphG(),pm(0x7A3A9A,{roughness:.25,em:0x401060,ei:.5}),R*.82,y,0,.09,.17,.17);part(g,sphG(),pm(0x080808,{roughness:.15}),R*.97,y,0,.05,.085,.085);
  [.4,1.5,2.7,3.9,5.1].forEach(a=>{const P=[2.8,2.3,1.8,1.35].map(s=>V(R*1.005*Math.cos(s),y+R*1.005*Math.sin(s)*Math.cos(a),R*1.005*Math.sin(s)*Math.sin(a)));tube(P,.012,.004,VN,g)});
@@ -435,7 +450,7 @@ FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,kobold:.3,gnome:.3,ogre:.78,warg:.62,bear:.95,gremishka:.24,eagle:.6,drow:.42,drider:.95,hyena:.45,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,kobold:.3,gnome:.3,ogre:.78,warg:.62,bear:.95,gremishka:.24,eagle:.6,drow:.42,drider:.95,hyena:.45,fist:.44,horror:.5,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
