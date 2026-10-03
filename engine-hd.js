@@ -359,6 +359,17 @@ gremishka:(g,c,t)=>{/* gremishka: small hairless cat body, arched back, big bat 
  part(g,boxG(),dk,.32,.29,0,.04,.012,.07);
  tube([V(-.2,.26,0),V(-.36,.34,0),V(-.46,.3,.04),V(-.52,.36,.06)],.018,.006,sk,g);
  return .62},
+eagle:(g,c,t)=>{/* giant eagle: perched great bird, brown body, pale head, hooked yellow beak, yellow legs and dark talons. t.wing:1 = wings half-spread, t.head = head colour */const fr=pm((t&&t.skin)||0x5A3E24,{tex:"leather",bs:.02,roughness:.9}),wg=pm((t&&t.skin)?(t.skin&0xFEFEFE)>>1:0x3E2A18,{tex:"leather",bs:.02,roughness:.9,side:T3.DoubleSide}),hd=pm((t&&t.head)||0xE8E2D2,{roughness:.8}),YL=pm(0xE0A830,{roughness:.5}),TL=pm(0x1E1A16,{roughness:.4});
+ [-1,1].forEach(s=>{seg(g,V(.02,.62,s*.12),V(.06,.08,s*.14),.06,.045,YL);[-1,0,1].forEach(k=>part(g,coneG(5),TL,.16,.04,s*.14+k*.05,.022,.12,.022,0,k*.4,-PI/2));part(g,coneG(5),TL,-.06,.04,s*.14,.02,.1,.02,0,0,PI/2)});
+ part(g,sphG(),fr,0,.92,0,.5,.44,.34,0,0,.35);
+ part(g,sphG(),pm(0x8A6A44,{roughness:.9}),.22,.92,0,.26,.32,.26,0,0,.3);
+ part(g,boxG(),wg,-.62,.6,0,.5,.05,.34,0,0,.45);
+ part(g,sphG(),hd,.3,1.32,0,.17,.24,.17,0,0,-.2);part(g,sphG(),hd,.4,1.46,0,.18,.17,.16);
+ part(g,coneG(6),YL,.62,1.45,0,.07,.2,.06,0,0,-PI/2);part(g,coneG(5),YL,.71,1.4,0,.03,.08,.03,0,0,PI-.3);
+ [-1,1].forEach(s=>{part(g,sphG(),pm(0xD08A10,{em:0x603000,ei:.5}),.5,1.5,s*.1,.03);part(g,boxG(),pm(0xD8D2C2),.46,1.55,s*.09,.1,.025,.04,0,0,-.2)});
+ if(t&&t.wing){[-1,1].forEach(s=>{const w=new T3.Group();w.position.set(-.05,1.12,s*.26);w.rotation.y=-s*PI/2;w.rotation.x=0;w.rotation.z=.25;g.add(w);ext([[0,0],[.5,.35],[1.1,.55],[1.6,.42],[1.75,.2],[1.5,.05],[1.6,-.1],[1.25,-.12],[1.3,-.28],[.9,-.25],[.85,-.4],[.4,-.3]],.03,wg,w)})}
+ else{[-1,1].forEach(s=>part(g,sphG(),wg,-.08,.95,s*.28,.56,.34,.08,0,0,.4))}
+ return 1.7},
 drow:(g,c,t)=>{/* drow: dark grey-violet skin, long silver-white hair, red eyes, black plate with violet spider sigil, mace */const h=HUM(g,{H:1.72,bulk:.86,skin:(t&&t.skin)||0x4E4A5E,top:0x1E1C24,topM:{metalness:.7,roughness:.35},bottom:0x1A181E,boots:0x121016,sleeve:0x1E1C24,sleeveM:{metalness:.7,roughness:.35},eye:0xE03030,eyeE:0x900000}),y=h.head.y,b=h.b,HR=pm(0xE8E8F0,{roughness:.7}),BK=MET(0x1E1C24);
  [-1,1].forEach(s=>part(g,coneG(4),h.S,-.02,y+.03,s*.09,.016,.13,.024,s*1.3,0,.6));
  hair(g,h,0xE8E8F0,{tilt:.42});tube([V(-.08,y+.06,0),V(-.14,y-.1,0),V(-.15,y-.38,0)],.06,.035,HR,g);[-1,1].forEach(s=>tube([V(-.02,y+.02,s*.08),V(-.05,y-.14,s*.1),V(-.06,y-.3,s*.1)],.025,.015,HR,g));
@@ -406,7 +417,7 @@ FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,kobold:.3,gnome:.3,ogre:.78,warg:.62,bear:.95,gremishka:.24,drow:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,kobold:.3,gnome:.3,ogre:.78,warg:.62,bear:.95,gremishka:.24,eagle:.6,drow:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
