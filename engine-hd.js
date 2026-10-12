@@ -421,6 +421,16 @@ meazel:(g,c,t)=>{/* meazel: gaunt grey hunched humanoid, bald head, glossy black
  [-1,1].forEach(s=>{const sh=V(.1,1.32,s*.19),el=V(.2,1.02,s*.28),hd=V(.46,.98,s*.2);seg(g,sh,el,.04,.032,sk);seg(g,el,hd,.032,.024,sk);[-1,0,1].forEach(k=>seg(g,hd,V(hd.x+.15,hd.y-.03,hd.z+k*.03),.009,.004,sk))});
  tube([V(.5,.98,-.2),V(.58,.9,-.08),V(.58,.9,.08),V(.5,.98,.2)],.012,.012,cd,g);
  return 1.7},
+doppel:(g,c,t)=>{/* doppelganger: tall thin grey humanoid, bald, blank white eyes, long fingers, dark plain clothes; wpn:"rapier"|"dagger"|"xbow" */const skc=(t&&t.skin)||0x9C9C98,h=HUM(g,{H:2.0,bulk:.8,skin:skc,top:0x2E2A2C,bottom:0x262224,boots:0x1A1618,sleeve:skc,eye:0xF6F6F0,eyeE:0x9A9A90}),S=h.S,y=h.head.y,hs=h.hs;
+ [-1,1].forEach(s=>part(g,sphG(),pm(0xF6F6F0,{roughness:.2,em:0xB0B0A8,ei:.8}),.09*hs,h.Y(1.665),s*.04*hs,.024*hs,.02*hs,.024*hs));
+ part(g,boxG(),pm(0x2A2626,{roughness:.6}),.1*hs,h.Y(1.58),0,.01,.008,.05);
+ [h.hand,h.handL].forEach(a=>[-1,0,1].forEach(k=>seg(g,a,V(a.x+.14,a.y-.06,a.z+k*.028),.01,.004,S)));
+ part(g,cylG(),pm(0x3A3236,{roughness:.8}),0,h.Y(.96),0,.13*h.b,.05,.17*h.b);
+ const w=t&&t.wpn,a=h.hand;
+ if(w=="dagger")blade(g,a,V(.6,.8,0),.32,.035,MET(0xC8CED4));
+ else if(w=="xbow"){const W=pm(0x4A3424,{roughness:.8});part(g,boxG(),W,a.x+.2,a.y+.02,a.z,.5,.06,.06);tube([V(a.x+.42,a.y+.04,a.z-.32),V(a.x+.5,a.y+.04,a.z),V(a.x+.42,a.y+.04,a.z+.32)],.018,.014,MET(0x6A6A6A),g);seg(g,V(a.x+.42,a.y+.05,a.z-.32),V(a.x+.42,a.y+.05,a.z+.32),.004,.004,pm(0xD8D0B8))}
+ else if(w!="none")blade(g,a,V(.35,1,0),.95,.022,MET(0xD8DEE4));
+ return 2.2},
 shadow:(g,c,t)=>{/* shadow: smoky black humanoid silhouette tapering into wisps, pale glowing eyes, long thin claws */const sk=pm((t&&t.skin)||0x1A1820,{roughness:.9,transparent:true,opacity:.8}),wp=pm(0x2E2A3A,{roughness:.9,transparent:true,opacity:.5}),ey=pm(0xE8F0FF,{em:0xA0C0FF,ei:2});
  part(g,lat([[0,0],[.05,0],[.12,.3],[.2,.7],[.22,1.0],[.18,1.2],[.1,1.3],[0,1.32]]),sk,0,.15,0,1).scale.set(.75,1,1);
  [-1,0,1].forEach(s=>tube([V(0,.4,s*.06),V(-.15,.24,s*.12),V(-.3,.12,s*.1),V(-.46,.05,s*.15)],.07,.01,wp,g));
@@ -482,7 +492,7 @@ FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,kobold:.3,gnome:.3,ogre:.78,warg:.62,bear:.95,gremishka:.24,eagle:.6,drow:.42,drider:.95,hyena:.45,fist:.44,horror:.5,meazel:.42,shadow:.4,wraith:.45,mastiff:.62,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,kobold:.3,gnome:.3,ogre:.78,warg:.62,bear:.95,gremishka:.24,eagle:.6,drow:.42,drider:.95,hyena:.45,fist:.44,horror:.5,meazel:.42,doppel:.42,shadow:.4,wraith:.45,mastiff:.62,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
