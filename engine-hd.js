@@ -301,24 +301,6 @@ wizard:g=>{const h=HUM(g,{H:1.8,bulk:.95,skin:0xD9B08C,top:0x4B2E83,bottom:0x4B2
 tiefling:(g,c,t)=>{const sk=(t&&t.skin)||0xA8433A,h=HUM(g,{H:1.78,bulk:.9,skin:sk,top:0x5A4A32,bottom:0x3A3A2E,sleeve:0x4A3E2A,eye:0xE8C040,eyeE:0x6A4A00}),y=h.head.y,HN=pm(0x2A2020,{roughness:.6});
  hair(g,h,0x1A1418);[-1,1].forEach(s=>tube([V(.03,y+.09,s*.06),V(-.02,y+.18,s*.1),V(-.12,y+.16,s*.12),V(-.14,y+.05,s*.1)],.03,.01,HN,g));
  tube([V(-.1,h.Y(.95),0),V(-.3,h.Y(.6),0),V(-.35,h.Y(.2),.1),V(-.22,h.Y(.1),.2)],.035,.01,h.S,g);return 2.0},
-goblin:(g,c,t)=>{const h=HUM(g,{H:1.05,bulk:.85,skin:0x7A8F4A,top:0x5A4430,topM:{tex:"leather",bs:.01},bottom:0x4A3A28,boots:0x2A2018,headS:1.5,eye:0xE0C030,eyeE:0x6A5000}),y=h.head.y,hs=h.hs;
- [-1,1].forEach(s=>part(g,coneG(4),h.S,-.02,y+.02,s*.12*hs,.03,.2,.05,s*1.45,0,.2));
- part(g,coneG(6),h.S,.14*hs*.75,y-.02,0,.02,.07,.02,0,0,-1.3);
- const a=h.hand;
- if(t&&t.wpn=="axe"){/* greataxe as tall as the goblin, dragged behind */const top=V(a.x+.1,a.y+.16,a.z),e=V(a.x-.6,.07,a.z+.14);seg(g,top,e,.024,.02,pm(0x4A3020,{roughness:.8}));
-  const hg=new T3.Group();hg.position.copy(e).lerp(top,.12);hg.quaternion.setFromUnitVectors(V(0,1,0),top.clone().sub(e).normalize());hg.rotateY(PI/2);g.add(hg);
-  const ax=MET(0x8A8E92);[-1,1].forEach(s=>ext([[0,.05],[s*.13,.18,s*.26,.18],[s*.21,0,s*.26,-.18],[s*.13,-.18,0,-.05]],.02,ax,hg,.003))}
- else{const m=MET(0xA0A4A8),grp=new T3.Group();grp.position.copy(a);g.add(grp);ext([[0,0],[.03,.1,.02,.42],[-.03,.4],[-.02,.1,-.02,0]],.012,m,grp);seg(g,V(a.x,a.y-.06,a.z),V(a.x,a.y+.03,a.z),.014,.014,pm(0x3A2A1A))}
- return 1.35},
-kobold:(g,c,t)=>{/* kobold: small reptile, rust scales, snout, small back horns, tail. t.wpn:"mace" gold sun mace, t.helm rusty helmet, t.apron */const sk=(t&&t.skin)||0x9A4E2E,h=HUM(g,{H:.95,bulk:.78,skin:sk,top:(t&&t.apron)?0x8A7A5A:0x5A4430,topM:{tex:"leather",bs:.008},bottom:0x4A3A28,boots:sk,headS:1.4,eye:0xF0C020,eyeE:0x6A5000}),y=h.head.y,hs=h.hs;
- part(g,boxG(),h.S,.1*hs,y-.035*hs,0,.12*hs,.06*hs,.08*hs);part(g,boxG(),h.S,.09*hs,y-.075*hs,0,.1*hs,.025*hs,.07*hs);
- [-1,1].forEach(s=>part(g,coneG(5),pm(0xD8CCA8,{roughness:.5}),-.06*hs,y+.07*hs,s*.05*hs,.018,.11,.018,s*.25,0,1.15));
- tube([V(-.08,h.Y(.5),0),V(-.3,h.Y(.3),0),V(-.45,.06,.08),V(-.62,.04,.16)],.05,.012,h.S,g);
- if(t&&t.helm)part(g,sphG(),MET(0x7A5A3A),-.01*hs,y+.03*hs,0,.1*hs,.07*hs,.1*hs);
- const a=h.hand;
- if(t&&t.wpn=="mace"){const GD=MET(0xD8B040),tp=V(a.x+.06,a.y+.5,a.z);seg(g,V(a.x,a.y-.05,a.z),tp,.016,.016,GD);part(g,sphG(),GD,tp.x,tp.y,tp.z,.065,.065,.065);part(g,cylG(),pm(0xFFD860,{em:0xC08010,ei:.8}),tp.x+.06,tp.y,tp.z,.05,.012,.05,0,0,PI/2)}
- else{const m=MET(0xA0A4A8),grp=new T3.Group();grp.position.copy(a);g.add(grp);ext([[0,0],[.025,.08,.015,.3],[-.025,.28],[-.015,.08,-.015,0]],.01,m,grp);seg(g,V(a.x,a.y-.05,a.z),V(a.x,a.y+.02,a.z),.012,.012,pm(0x3A2A1A))}
- return 1.25},
 gnome:(g,c,t)=>{/* deep gnome: small, grey stone skin, bald, big nose */const h=HUM(g,{H:1.0,bulk:.8,skin:(t&&t.skin)||0x8E8C88,top:0x5A4E42,topM:{tex:"leather",bs:.008},bottom:0x3E3630,boots:0x2A2420,headS:1.45,eye:0x141414}),y=h.head.y,hs=h.hs;
  part(g,sphG(),h.S,.1*hs+.012,y-.015,0,.042,.036,.032);
  [-1,1].forEach(s=>part(g,coneG(4),h.S,-.01,y+.01,s*.1*hs,.024,.12,.04,s*1.4,0,.3));
@@ -333,15 +315,6 @@ ogre:(g,c,t)=>{/* ogre: huge, pot belly, hide loincloth, small head, underbite t
  const a=h.hand,tp=V(a.x+.28,a.y+1.15,a.z+.05),WD=pm(0x5A3A20,{tex:"plank",bs:.02,roughness:.9});seg(g,V(a.x-.04,a.y-.18,a.z),tp,.05,.14,WD);
  [[.4,.2],[.6,-.3],[.8,.9],[.9,2.3],[.55,1.6],[.7,3.4]].forEach(([q,r])=>{const p=V(a.x-.04,a.y-.18,a.z).lerp(tp,q);part(g,coneG(4),MET(0x7A7470),p.x+Math.cos(r)*.09,p.y,p.z+Math.sin(r)*.09,.025,.1,.025,Math.sin(r)*1.4,0,-Math.cos(r)*1.4)});
  return 3.2},
-warg:(g,c,t)=>{/* warg: big dark wolf, shaggy mane, long snout, pale fangs, yellow eyes */const fr=pm((t&&t.skin)||0x3A3632,{tex:"leather",bs:.02,roughness:.9}),dk=pm(0x1E1C1A,{roughness:.9}),mn=pm(0x26221F,{roughness:.95});
- [[.36,.17],[.36,-.17],[-.36,.17],[-.36,-.17]].forEach(([x,z])=>{seg(g,V(x,.55,z),V(x+.04,.25,z*1.05),.07,.055,fr);seg(g,V(x+.04,.25,z*1.05),V(x+.02,.03,z*1.05),.05,.04,dk)});
- part(g,sphG(),fr,0,.66,0,.58,.3,.28);part(g,sphG(),mn,.3,.76,0,.3,.3,.3);
- [0,1,2,3,4].forEach(i=>part(g,coneG(4),mn,.12+i*.09,.98,0,.05,.16,.05,0,0,-.3));
- part(g,sphG(),fr,.62,.82,0,.19,.17,.17);part(g,boxG(),fr,.84,.77,0,.28,.12,.14);part(g,boxG(),dk,.99,.8,0,.05,.06,.07);
- part(g,boxG(),pm(0x6A2020,{roughness:.6}),.84,.7,0,.24,.03,.1);
- [-1,1].forEach(s=>{part(g,coneG(4),fr,.56,1.0,s*.08,.045,.14,.035,s*.2,0,-.15);part(g,sphG(),pm(0xFFD040,{em:0xFFA000,ei:1.4}),.74,.86,s*.075,.022);[.76,.92].forEach(x=>part(g,coneG(6),pm(0xEEE6CC,{roughness:.4}),x,.72,s*.05,.012,.06,.012,PI,0,0))});
- tube([V(-.55,.72,0),V(-.8,.62,0),V(-.95,.42,0),V(-1.02,.3,0)],.07,.035,mn,g);
- return 1.1},
 bear:(g,c,t)=>{/* cave bear: huge brown bear, shoulder hump, round ears, short snout, thick legs, pale claws */const fr=pm((t&&t.skin)||0x5A3A22,{tex:"leather",bs:.02,roughness:.92}),dk=pm(0x2A1A10,{roughness:.9}),mz=pm(0x7A5A3A,{roughness:.9});
  [[.48,.26],[.48,-.26],[-.46,.26],[-.46,-.26]].forEach(([x,z])=>{seg(g,V(x,.8,z),V(x+.03,.12,z*1.04),.15,.12,fr);part(g,sphG(),dk,x+.07,.08,z*1.04,.13,.08,.12);[-1,0,1].forEach(k=>part(g,coneG(4),pm(0xE8DEC0,{roughness:.4}),x+.2,.05,z*1.04+k*.05,.015,.07,.015,0,0,-PI/2))});
  part(g,sphG(),fr,0,.95,0,.82,.5,.46);part(g,sphG(),fr,.3,1.2,0,.42,.36,.4);part(g,sphG(),fr,-.55,.92,0,.36,.38,.38);
@@ -349,27 +322,6 @@ bear:(g,c,t)=>{/* cave bear: huge brown bear, shoulder hump, round ears, short s
  [-1,1].forEach(s=>{part(g,sphG(),fr,.8,1.32,s*.17,.08,.08,.05);part(g,sphG(),dk,.81,1.32,s*.17,.045,.045,.03);part(g,sphG(),pm(0xC89A40,{em:0x6A4A10,ei:.6}),1.06,1.13,s*.1,.025)});
  part(g,sphG(),fr,-.95,.95,0,.08,.08,.08);
  return 1.6},
-gremishka:(g,c,t)=>{/* gremishka: small hairless cat body, arched back, big bat ears, needle teeth, glowing eyes, thin tail */const sk=pm((t&&t.skin)||0xB8979A,{roughness:.5,tex:"flesh",bs:.012}),dk=pm(0x4A2A32,{roughness:.6}),TH=pm(0xF2ECDC,{roughness:.3});
- [[.13,.07],[.13,-.07],[-.12,.07],[-.12,-.07]].forEach(([x,z])=>{seg(g,V(x,.22,z),V(x+.02,.03,z*1.1),.03,.02,sk);part(g,sphG(),dk,x+.04,.02,z*1.1,.03,.015,.025)});
- part(g,sphG(),sk,0,.25,0,.2,.11,.1);part(g,sphG(),sk,-.04,.31,0,.13,.09,.085);
- part(g,sphG(),sk,.23,.33,0,.095,.088,.088);part(g,sphG(),sk,.3,.3,0,.05,.04,.05);
- [-1,1].forEach(s=>{part(g,coneG(4),sk,.19,.46,s*.08,.045,.19,.012,s*.55,0,-.2);part(g,coneG(4),dk,.195,.45,s*.077,.028,.13,.006,s*.55,0,-.2);
-  part(g,sphG(),pm(0xD8F040,{em:0xA0C000,ei:1.6}),.3,.355,s*.042,.022);
-  [.31,.335].forEach(x=>part(g,coneG(5),TH,x,.275,s*.022,.008,.04,.008,PI,0,0))});
- part(g,boxG(),dk,.32,.29,0,.04,.012,.07);
- tube([V(-.2,.26,0),V(-.36,.34,0),V(-.46,.3,.04),V(-.52,.36,.06)],.018,.006,sk,g);
- return .62},
-eagle:(g,c,t)=>{/* giant eagle: perched great bird, brown body, pale head, hooked yellow beak, yellow legs and dark talons. t.wing:1 = wings half-spread, t.head = head colour */const fr=pm((t&&t.skin)||0x5A3E24,{tex:"leather",bs:.02,roughness:.9}),wg=pm((t&&t.skin)?(t.skin&0xFEFEFE)>>1:0x3E2A18,{tex:"leather",bs:.02,roughness:.9,side:T3.DoubleSide}),hd=pm((t&&t.head)||0xE8E2D2,{roughness:.8}),YL=pm(0xE0A830,{roughness:.5}),TL=pm(0x1E1A16,{roughness:.4});
- [-1,1].forEach(s=>{seg(g,V(.02,.62,s*.12),V(.06,.08,s*.14),.06,.045,YL);[-1,0,1].forEach(k=>part(g,coneG(5),TL,.16,.04,s*.14+k*.05,.022,.12,.022,0,k*.4,-PI/2));part(g,coneG(5),TL,-.06,.04,s*.14,.02,.1,.02,0,0,PI/2)});
- part(g,sphG(),fr,0,.92,0,.5,.44,.34,0,0,.35);
- part(g,sphG(),pm(0x8A6A44,{roughness:.9}),.22,.92,0,.26,.32,.26,0,0,.3);
- part(g,boxG(),wg,-.62,.6,0,.5,.05,.34,0,0,.45);
- part(g,sphG(),hd,.3,1.32,0,.17,.24,.17,0,0,-.2);part(g,sphG(),hd,.4,1.46,0,.18,.17,.16);
- part(g,coneG(6),YL,.62,1.45,0,.07,.2,.06,0,0,-PI/2);part(g,coneG(5),YL,.71,1.4,0,.03,.08,.03,0,0,PI-.3);
- [-1,1].forEach(s=>{part(g,sphG(),pm(0xD08A10,{em:0x603000,ei:.5}),.5,1.5,s*.1,.03);part(g,boxG(),pm(0xD8D2C2),.46,1.55,s*.09,.1,.025,.04,0,0,-.2)});
- if(t&&t.wing){[-1,1].forEach(s=>{const w=new T3.Group();w.position.set(-.05,1.12,s*.26);w.rotation.y=-s*PI/2;w.rotation.x=0;w.rotation.z=.25;g.add(w);ext([[0,0],[.5,.35],[1.1,.55],[1.6,.42],[1.75,.2],[1.5,.05],[1.6,-.1],[1.25,-.12],[1.3,-.28],[.9,-.25],[.85,-.4],[.4,-.3]],.03,wg,w)})}
- else{[-1,1].forEach(s=>part(g,sphG(),wg,-.08,.95,s*.28,.56,.34,.08,0,0,.4))}
- return 1.7},
 drow:(g,c,t)=>{/* drow: dark grey-violet skin, long silver-white hair, red eyes, black plate with violet spider sigil, mace */const h=HUM(g,{H:1.72,bulk:.86,skin:(t&&t.skin)||0x4E4A5E,top:0x1E1C24,topM:{metalness:.7,roughness:.35},bottom:0x1A181E,boots:0x121016,sleeve:0x1E1C24,sleeveM:{metalness:.7,roughness:.35},eye:0xE03030,eyeE:0x900000}),y=h.head.y,b=h.b,HR=pm(0xE8E8F0,{roughness:.7}),BK=MET(0x1E1C24);
  [-1,1].forEach(s=>part(g,coneG(4),h.S,-.02,y+.03,s*.09,.016,.13,.024,s*1.3,0,.6));
  hair(g,h,0xE8E8F0,{tilt:.42});tube([V(-.08,y+.06,0),V(-.14,y-.1,0),V(-.15,y-.38,0)],.06,.035,HR,g);[-1,1].forEach(s=>tube([V(-.02,y+.02,s*.08),V(-.05,y-.14,s*.1),V(-.06,y-.3,s*.1)],.025,.015,HR,g));
@@ -379,24 +331,6 @@ drow:(g,c,t)=>{/* drow: dark grey-violet skin, long silver-white hair, red eyes,
  const a=h.hand;seg(g,V(a.x,a.y-.08,a.z),V(a.x+.08,a.y+.42,a.z),.018,.018,pm(0x221A2A));part(g,sphG(),MET(0x3A3448),a.x+.09,a.y+.46,a.z,.07);
  [0,1,2,3].forEach(i=>part(g,boxG(),MET(0x5A4A7A),a.x+.09,a.y+.46,a.z,.02,.13,.14,0,i*PI/4,0));
  return 1.9},
-drider:(g,c,t)=>{/* drider: drow torso on a giant spider body, white hair, red eyes, two curved blades */const CH=pm((t&&t.body)||0x1E1A22,{roughness:.5,metalness:.15}),LG=pm(0x26222A,{roughness:.6}),MK=pm(0x7A2A3A,{roughness:.6});
- part(g,sphG(),CH,-.62,.85,0,.64,.44,.52);[[-.78,1.2,.22],[-.45,1.18,-.25],[-.95,1.0,-.38],[-.6,1.27,0],[-1.1,.9,.2]].forEach(p=>part(g,sphG(),MK,p[0],p[1],p[2],.07,.035,.07));
- part(g,sphG(),CH,.15,.95,0,.36,.3,.34);
- [.32,.12,-.08,-.28].forEach((x,i)=>[-1,1].forEach(s=>{const d=i<2?1:-1,k=V(x*1.4+d*.28,1.45,s*.82),f=V(x*2+d*.62,.03,s*1.38);seg(g,V(x,.95,s*.27),k,.06,.05,LG);seg(g,k,f,.05,.018,LG)}));
- const up=new T3.Group();up.position.set(.2,.2,0);up.scale.setScalar(1.3);g.add(up);
- const h=HUM(up,{H:1.72,bulk:.86,skin:(t&&t.skin)||0x4E4A5E,top:0x2A2230,topM:{metalness:.5,roughness:.4},bottom:0x1E1A22,sleeve:null,eye:0xE03030,eyeE:0x900000,noLegs:1}),y=h.head.y,HR=pm(0xE8E8F0,{roughness:.7});
- [-1,1].forEach(s=>part(up,coneG(4),h.S,-.02,y+.03,s*.09,.016,.13,.024,s*1.3,0,.6));
- hair(up,h,0xE8E8F0,{tilt:.42});tube([V(-.08,y+.06,0),V(-.14,y-.1,0),V(-.15,y-.42,0)],.06,.035,HR,up);
- const bm=MET(0xB8BCC4);blade(up,h.hand,V(.5,1,.25),.7,.05,bm);blade(up,h.handL,V(.5,1,-.25),.7,.05,bm);
- return 2.6},
-hyena:(g,c,t)=>{/* hyena: tan spotted body sloping down to the rear, round ears, dark muzzle, short dark tail */const fr=pm((t&&t.skin)||0x9A8058,{tex:"leather",bs:.02,roughness:.9}),dk=pm(0x2A221A,{roughness:.9}),sp=pm(0x4A3A28,{roughness:.9});
- [[.3,.13,.62],[.3,-.13,.62],[-.3,.13,.46],[-.3,-.13,.46]].forEach(([x,z,hh])=>{seg(g,V(x,hh,z),V(x+.03,.2,z*1.05),.055,.045,fr);seg(g,V(x+.03,.2,z*1.05),V(x+.02,.03,z*1.05),.04,.032,dk)});
- part(g,sphG(),fr,0,.6,0,.46,.22,.2,0,0,.2);part(g,sphG(),dk,.22,.78,0,.2,.08,.05,0,0,.3);
- [[-.12,.62,.16],[.05,.68,-.17],[-.22,.56,-.15],[.15,.68,.17],[-.3,.52,.12]].forEach(p=>part(g,sphG(),sp,p[0],p[1],p[2],.05,.04,.03));
- part(g,sphG(),fr,.5,.8,0,.15,.13,.13);part(g,boxG(),dk,.66,.76,0,.16,.09,.1);
- [-1,1].forEach(s=>{part(g,sphG(),fr,.44,.94,s*.08,.04,.06,.025);part(g,sphG(),pm(0xFFC040,{em:0xA06000,ei:1}),.6,.84,s*.06,.018)});
- tube([V(-.42,.55,0),V(-.55,.45,0),V(-.6,.32,0)],.04,.02,dk,g);
- return .98},
 fist:(g,c,t)=>{/* flaming fist: human mercenary in red tunic and steel breastplate; wing:1 adds grey leather wings (Marcus); wpn:"club" iron-banded great club */const h=HUM(g,{H:1.9,bulk:1.08,skin:(t&&t.skin)||0xD9B08C,top:0x9A2A20,topM:{roughness:.75},bottom:0x3A2A22,boots:0x241A14,sleeve:0x9A2A20}),y=h.head.y,b=h.b,ST=MET(0xA8ACB0);
  part(g,lat([[0,0],[.165,0],[.2,.2],[.215,.42],[.16,.5],[0,.52]].map(p=>[p[0]*b,p[1]*h.k])),ST,0,h.Y(.95),0,1).scale.set(.8,1,1.04);
  part(g,cylG(),pm(0x2E2014,{roughness:.6}),0,h.Y(.97),0,.13*b,.06,.17*b);hair(g,h,(t&&t.hair)||0x3A2418);
@@ -404,23 +338,6 @@ fist:(g,c,t)=>{/* flaming fist: human mercenary in red tunic and steel breastpla
  else blade(g,a,V(.3,1,0),.75,.04,MET(0xD0D6DC));
  if(t&&t.wing)[-1,1].forEach(s=>{const w=new T3.Group();w.position.set(-.16,h.Y(1.32),s*.1);w.rotation.y=s*PI/2+s*.35;w.rotation.x=s*-.15;g.add(w);ext([[0,0],[1.0,.8],[.9,.15],[.7,.36],[.55,-.1],[.32,.14]],.012,pm(0x5A5550,{roughness:.7,side:T3.DoubleSide}),w)});
  return 2.05},
-horror:(g,c,t)=>{/* winged horror: gaunt grey hunched body, long clawed arms, hooked talon feet, big tattered leather wings */const sk=pm((t&&t.skin)||0x7A7670,{tex:"leather",bs:.015,roughness:.8}),dk=pm(0x2E2A28,{roughness:.7}),wg=pm(0x4A4440,{roughness:.75,side:T3.DoubleSide});
- [-1,1].forEach(s=>{seg(g,V(-.05,.85,s*.12),V(.12,.5,s*.15),.06,.045,sk);seg(g,V(.12,.5,s*.15),V(-.02,.1,s*.15),.045,.03,sk);[-.5,0,.5].forEach(a=>part(g,coneG(5),dk,.04+.06*Math.cos(a),.06,s*.15+.05*Math.sin(a),.018,.1,.018,0,0,-1.3))});
- part(g,sphG(),sk,0,1.05,0,.18,.32,.16,0,0,-.35);[.9,1.05,1.2].forEach(yy=>part(g,sphG(),dk,-.13,yy,0,.035));
- seg(g,V(.1,1.3,0),V(.25,1.42,0),.05,.04,sk);part(g,sphG(),sk,.3,1.42,0,.12,.1,.09);part(g,boxG(),dk,.4,1.36,0,.1,.04,.07);
- [-1,1].forEach(s=>part(g,sphG(),pm(0xD8E060,{em:0x908000,ei:1.4}),.4,1.46,s*.04,.018));[-1,0,1].forEach(s=>part(g,coneG(4),pm(0xE6E0C8),.45,1.33,s*.025,.01,.04,.01,PI,0,0));
- [-1,1].forEach(s=>{const sh=V(.08,1.25,s*.17),el=V(.2,.95,s*.3),hd=V(.42,.85,s*.28);seg(g,sh,el,.04,.035,sk);seg(g,el,hd,.035,.025,sk);[-1,0,1].forEach(k=>part(g,coneG(4),dk,hd.x+.06,hd.y-.02,hd.z+k*.03,.012,.12,.012,0,0,-1.6))});
- [-1,1].forEach(s=>{const w=new T3.Group();w.position.set(-.1,1.25,s*.12);w.rotation.y=s*PI/2+s*.25;w.rotation.x=s*-.25;g.add(w);ext([[0,0],[1.15,.85],[1.05,.2],[.82,.42],[.66,-.05],[.42,.22],[.25,-.1]],.012,wg,w)});
- return 1.75},
-meazel:(g,c,t)=>{/* meazel: gaunt grey hunched humanoid, bald head, glossy black eyes, long fingers, garrote cord between hands, ragged loincloth */const sk=pm((t&&t.skin)||0x8A8A84,{tex:"leather",bs:.012,roughness:.75}),dk=pm(0x2A2826,{roughness:.6}),rg=pm(0x4A3E32,{roughness:.9}),cd=pm(0x9A8058,{roughness:.9});
- [-1,1].forEach(s=>{seg(g,V(-.02,.9,s*.11),V(.1,.48,s*.13),.06,.045,sk);seg(g,V(.1,.48,s*.13),V(-.02,.06,s*.13),.045,.035,sk);part(g,boxG(),sk,.06,.03,s*.13,.2,.05,.08)});
- part(g,boxG(),rg,.02,.86,0,.22,.2,.3);
- part(g,sphG(),sk,.02,1.15,0,.16,.3,.17,0,0,-.4);[1.04,1.14,1.24].forEach(yy=>part(g,boxG(),dk,.13+(yy-1.04)*.3,yy,0,.012,.014,.22));
- seg(g,V(.12,1.38,0),V(.26,1.5,0),.05,.04,sk);part(g,sphG(),sk,.32,1.52,0,.12,.13,.1);
- [-1,1].forEach(s=>part(g,sphG(),pm(0x0A0A0C,{roughness:.08}),.42,1.55,s*.045,.026,.032,.026));part(g,boxG(),dk,.43,1.45,0,.02,.02,.06);
- [-1,1].forEach(s=>{const sh=V(.1,1.32,s*.19),el=V(.2,1.02,s*.28),hd=V(.46,.98,s*.2);seg(g,sh,el,.04,.032,sk);seg(g,el,hd,.032,.024,sk);[-1,0,1].forEach(k=>seg(g,hd,V(hd.x+.15,hd.y-.03,hd.z+k*.03),.009,.004,sk))});
- tube([V(.5,.98,-.2),V(.58,.9,-.08),V(.58,.9,.08),V(.5,.98,.2)],.012,.012,cd,g);
- return 1.7},
 doppel:(g,c,t)=>{/* doppelganger: tall thin grey humanoid, bald, blank white eyes, long fingers, dark plain clothes; wpn:"rapier"|"dagger"|"xbow" */const skc=(t&&t.skin)||0x9C9C98,h=HUM(g,{H:2.0,bulk:.8,skin:skc,top:0x2E2A2C,bottom:0x262224,boots:0x1A1618,sleeve:skc,eye:0xF6F6F0,eyeE:0x9A9A90}),S=h.S,y=h.head.y,hs=h.hs;
  [-1,1].forEach(s=>part(g,sphG(),pm(0xF6F6F0,{roughness:.2,em:0xB0B0A8,ei:.8}),.09*hs,h.Y(1.665),s*.04*hs,.024*hs,.02*hs,.024*hs));
  part(g,boxG(),pm(0x2A2626,{roughness:.6}),.1*hs,h.Y(1.58),0,.01,.008,.05);
@@ -431,29 +348,6 @@ doppel:(g,c,t)=>{/* doppelganger: tall thin grey humanoid, bald, blank white eye
  else if(w=="xbow"){const W=pm(0x4A3424,{roughness:.8});part(g,boxG(),W,a.x+.2,a.y+.02,a.z,.5,.06,.06);tube([V(a.x+.42,a.y+.04,a.z-.32),V(a.x+.5,a.y+.04,a.z),V(a.x+.42,a.y+.04,a.z+.32)],.018,.014,MET(0x6A6A6A),g);seg(g,V(a.x+.42,a.y+.05,a.z-.32),V(a.x+.42,a.y+.05,a.z+.32),.004,.004,pm(0xD8D0B8))}
  else if(w!="none")blade(g,a,V(.35,1,0),.95,.022,MET(0xD8DEE4));
  return 2.2},
-shadow:(g,c,t)=>{/* shadow: smoky black humanoid silhouette tapering into wisps, pale glowing eyes, long thin claws */const sk=pm((t&&t.skin)||0x1A1820,{roughness:.9,transparent:true,opacity:.8}),wp=pm(0x2E2A3A,{roughness:.9,transparent:true,opacity:.5}),ey=pm(0xE8F0FF,{em:0xA0C0FF,ei:2});
- part(g,lat([[0,0],[.05,0],[.12,.3],[.2,.7],[.22,1.0],[.18,1.2],[.1,1.3],[0,1.32]]),sk,0,.15,0,1).scale.set(.75,1,1);
- [-1,0,1].forEach(s=>tube([V(0,.4,s*.06),V(-.15,.24,s*.12),V(-.3,.12,s*.1),V(-.46,.05,s*.15)],.07,.01,wp,g));
- part(g,sphG(),sk,.03,1.6,0,.13,.16,.12);[-1,1].forEach(s=>part(g,sphG(),ey,.14,1.63,s*.045,.022));
- [-1,1].forEach(s=>{const sh=V(0,1.32,s*.18),el=V(.12,1.05,s*.32),hd=V(.36,.95,s*.3);seg(g,sh,el,.045,.035,sk);seg(g,el,hd,.035,.02,sk);[-1,0,1].forEach(k=>seg(g,hd,V(hd.x+.22,hd.y-.08,hd.z+k*.04),.012,.003,sk))});
- const hl=halo(0x8090C0,.5);hl.position.set(.14,1.63,0);g.add(hl);
- return 1.85},
-wraith:(g,c,t)=>{/* wraith: floating tattered dark hooded robe, black void face with pale eyes, skeletal clawed hands */const rb=pm((t&&t.skin)||0x24222C,{roughness:.95,transparent:true,opacity:.88,side:T3.DoubleSide}),bn=pm(0x9A968A,{roughness:.6}),dk=pm(0x050508,{roughness:1}),ey=pm(0xC8E0FF,{em:0x90B0FF,ei:2.2});
- part(g,lat([[0,0],[.34,0],[.3,.15],[.24,.6],[.2,1.0],[.25,1.2],[.14,1.32],[0,1.34]]),rb,0,.32,0,1).scale.set(.8,1,1);
- for(let i=0;i<8;i++){const a=i*PI/4;part(g,coneG(4),rb,Math.cos(a)*.24,.24,Math.sin(a)*.27,.06,.26,.04,PI,0,0)}
- part(g,sphG(),rb,0,1.78,0,.18,.22,.17);part(g,sphG(),dk,.08,1.74,0,.12,.15,.11);[-1,1].forEach(s=>part(g,sphG(),ey,.19,1.76,s*.045,.02));
- [-1,1].forEach(s=>{const sh=V(0,1.52,s*.2),el=V(.18,1.3,s*.34),hd=V(.42,1.22,s*.28);seg(g,sh,el,.07,.06,rb);seg(g,el,hd,.025,.02,bn);[-1,0,1].forEach(k=>seg(g,hd,V(hd.x+.16,hd.y-.06,hd.z+k*.035),.01,.004,bn))});
- const hl=halo(0x7080B0,.9);hl.position.set(.15,1.75,0);g.add(hl);
- return 2.1},
-mastiff:(g,c,t)=>{/* shadow mastiff: black smoky hound, violet glowing eyes, pale fangs, wisps rising from the back and tail */const fr=pm((t&&t.skin)||0x16151C,{roughness:.85,transparent:true,opacity:.92}),dk=pm(0x08080C,{roughness:.9}),wp=pm(0x2E2A3C,{roughness:.9,transparent:true,opacity:.55}),ey=pm(0xC080FF,{em:0x8030FF,ei:2});
- [[.36,.17],[.36,-.17],[-.36,.17],[-.36,-.17]].forEach(([x,z])=>{seg(g,V(x,.55,z),V(x+.04,.25,z*1.05),.07,.055,fr);seg(g,V(x+.04,.25,z*1.05),V(x+.02,.03,z*1.05),.05,.04,dk)});
- part(g,sphG(),fr,0,.66,0,.6,.28,.26);part(g,sphG(),fr,.32,.74,0,.3,.3,.28);
- part(g,sphG(),fr,.64,.84,0,.2,.18,.17);part(g,boxG(),fr,.86,.78,0,.26,.13,.15);part(g,boxG(),dk,1.0,.8,0,.05,.06,.07);
- [-1,1].forEach(s=>{part(g,coneG(4),fr,.58,1.02,s*.08,.045,.15,.035,s*.2,0,-.15);part(g,sphG(),ey,.76,.88,s*.075,.024);[.78,.94].forEach(x=>part(g,coneG(6),pm(0xEEE6CC,{roughness:.4}),x,.72,s*.05,.012,.06,.012,PI,0,0))});
- [0,1,2,3].forEach(i=>tube([V(-.35+i*.2,.9,0),V(-.42+i*.2,1.1,.05),V(-.58+i*.2,1.24,-.03)],.06,.01,wp,g));
- tube([V(-.55,.72,0),V(-.8,.66,0),V(-.98,.8,0),V(-1.12,.95,0)],.07,.012,wp,g);
- const hl=halo(0x9050E0,.6);hl.position.set(.76,.88,0);g.add(hl);
- return 1.15},
 eye:(g,c,t)=>{/* watchful eye: floating bloodshot eyeball with violet iris and a dangling nerve */const y=1.75,R=.32,W=pm(0xEDE6DA,{roughness:.3}),VN=pm(0xB02828,{roughness:.5});
  part(g,sphG(),W,0,y,0,R);part(g,sphG(),pm(0x7A3A9A,{roughness:.25,em:0x401060,ei:.5}),R*.82,y,0,.09,.17,.17);part(g,sphG(),pm(0x080808,{roughness:.15}),R*.97,y,0,.05,.085,.085);
  [.4,1.5,2.7,3.9,5.1].forEach(a=>{const P=[2.8,2.3,1.8,1.35].map(s=>V(R*1.005*Math.cos(s),y+R*1.005*Math.sin(s)*Math.cos(a),R*1.005*Math.sin(s)*Math.sin(a)));tube(P,.012,.004,VN,g)});
@@ -482,17 +376,12 @@ cambion:g=>{const h=HUM(g,{H:2.5,bulk:1.3,skin:0x9A2A20,top:0x1C1A1A,topM:{metal
  [-1,1].forEach(s=>tube([V(.02,y+.1,s*.07),V(-.03,y+.26,s*.14),V(-.15,y+.32,s*.2),V(-.24,y+.22,s*.2)],.045,.012,pm(0x1A1210,{roughness:.5}),g));
  [-1,1].forEach(s=>{const w=new T3.Group();w.position.set(-.18,h.Y(1.3),s*.12);w.rotation.y=s*PI/2+s*.35;w.rotation.x=s*-.15;g.add(w);ext([[0,0],[.95,.75],[.85,.15],[.66,.34],[.52,-.08],[.3,.14]],.012,pm(0x3A1212,{roughness:.6,side:T3.DoubleSide}),w)});
  const bm=pm(0xE8702A,{em:0xFF5A10,ei:1.6,roughness:.4});blade(g,h.hand,V(.3,1,.05),1.3,.08,bm);
- const hl=halo(0xFF6A20,1.8);hl.position.copy(h.hand).add(V(.25,.8,.05));g.add(hl);return 2.85},
-boar:g=>{const bd=pm(0x4A2418,{roughness:.8,tex:"leather",bs:.02}),dk=pm(0x201008);
- [[.3,.18],[.3,-.18],[-.3,.18],[-.3,-.18]].forEach(([x,z])=>seg(g,V(x,.45,z),V(x+.02,.03,z*1.05),.07,.045,dk));
- part(g,sphG(),bd,0,.62,0,.55,.33,.3);part(g,sphG(),bd,.5,.62,0,.2,.2,.2);part(g,cylG(),dk,.72,.56,0,.08,.14,.08,0,0,PI/2);
- [-1,1].forEach(s=>{part(g,coneG(6),pm(0xEEE6CC,{roughness:.4}),.74,.62,s*.08,.018,.12,.018,0,0,-.5);part(g,sphG(),pm(0xFF4010,{em:0xFF3000,ei:1.8}),.64,.7,s*.1,.025);part(g,coneG(4),dk,.45,.8,s*.1,.04,.1,.02,s*.4,0,.2)});
- const fm=pm(0xFF7A20,{em:0xFF4A00,ei:1.8});[-.25,-.08,.1,.26].forEach((x,i)=>part(g,coneG(5),fm,x,.95+i%2*.03,0,.05,.18,.05));return 1.15}};
+ const hl=halo(0xFF6A20,1.8);hl.position.copy(h.hand).add(V(.25,.8,.05));g.add(hl);return 2.85}};
 FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,goblin:.34,kobold:.3,gnome:.3,ogre:.78,warg:.62,bear:.95,gremishka:.24,eagle:.6,drow:.42,drider:.95,hyena:.45,fist:.44,horror:.5,meazel:.42,doppel:.42,shadow:.4,wraith:.45,mastiff:.62,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,boar:.62},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
