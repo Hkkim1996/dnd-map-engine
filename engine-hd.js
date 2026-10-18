@@ -376,12 +376,26 @@ cambion:g=>{const h=HUM(g,{H:2.5,bulk:1.3,skin:0x9A2A20,top:0x1C1A1A,topM:{metal
  [-1,1].forEach(s=>tube([V(.02,y+.1,s*.07),V(-.03,y+.26,s*.14),V(-.15,y+.32,s*.2),V(-.24,y+.22,s*.2)],.045,.012,pm(0x1A1210,{roughness:.5}),g));
  [-1,1].forEach(s=>{const w=new T3.Group();w.position.set(-.18,h.Y(1.3),s*.12);w.rotation.y=s*PI/2+s*.35;w.rotation.x=s*-.15;g.add(w);ext([[0,0],[.95,.75],[.85,.15],[.66,.34],[.52,-.08],[.3,.14]],.012,pm(0x3A1212,{roughness:.6,side:T3.DoubleSide}),w)});
  const bm=pm(0xE8702A,{em:0xFF5A10,ei:1.6,roughness:.4});blade(g,h.hand,V(.3,1,.05),1.3,.08,bm);
- const hl=halo(0xFF6A20,1.8);hl.position.copy(h.hand).add(V(.25,.8,.05));g.add(hl);return 2.85}};
+ const hl=halo(0xFF6A20,1.8);hl.position.copy(h.hand).add(V(.25,.8,.05));g.add(hl);return 2.85},
+sahuagin:(g,c,t)=>{/* sahuagin: scaly blue-green fish-man, fin crest, big black eyes, toothy jaw, webbed claws, tail; wpn:"spear"(default)|"bow"|"none" */const sk=(t&&t.skin)||0x3E7A6A,h=HUM(g,{H:1.85,bulk:1.0,skin:sk,top:sk,bottom:0x24493F,boots:0x2E5E52,sleeve:null,headS:1.1,eye:0x0A0C10,eyeE:0x0A3A30}),y=h.head.y,hs=h.hs,b=h.b,FN=pm(0x2A9A86,{roughness:.4,side:T3.DoubleSide}),BL=pm(0xA8C8B0,{roughness:.5});
+ part(g,sphG(),BL,.08*b,h.Y(1.2),0,.06,.16,.13*b);
+ [-.06,-.01,.04].forEach((dx,i)=>part(g,coneG(4),FN,dx,y+.11*hs,0,.012,.12+i*.02,.06,0,0,.35));
+ [1.3,1.15,1.0].forEach((q,i)=>part(g,coneG(4),FN,-.14*b,h.Y(q),0,.012,.12-i*.02,.05,0,0,1.1));
+ [-1,1].forEach(s=>part(g,coneG(4),FN,-.01,y+.01,s*.1*hs,.012,.1,.05,s*1.3,0,.2));
+ part(g,boxG(),pm(0x140C0C,{roughness:.6}),.1*hs,y-.06,0,.02,.02,.1);
+ [-.035,0,.035].forEach(z=>part(g,coneG(4),pm(0xF2EEE0,{roughness:.3}),.108*hs,y-.045,z,.008,.025,.008,0,0,PI));
+ [-1,1].forEach(s=>part(g,sphG(),pm(0x060608,{roughness:.1}),.085*hs,y+.02,s*.045*hs,.028,.03,.024));
+ tube([V(-.1,h.Y(.95),0),V(-.32,h.Y(.6),0),V(-.4,h.Y(.25),.05),V(-.5,h.Y(.12),.08)],.06,.015,h.S,g);part(g,coneG(4),FN,-.53,h.Y(.12),.08,.02,.12,.08,0,0,1.4);
+ [h.hand,h.handL].forEach(a=>[-1,0,1].forEach(k=>part(g,coneG(4),pm(0xE8E2D0,{roughness:.35}),a.x+.07,a.y-.03,a.z+k*.025,.008,.05,.008,0,0,-1.2)));
+ const w=t&&t.wpn,a=h.hand;
+ if(w=="bow"){tube([V(a.x+.05,a.y-.55,a.z),V(a.x+.22,a.y,a.z),V(a.x+.05,a.y+.55,a.z)],.02,.014,pm(0x5A4028,{roughness:.8}),g);seg(g,V(a.x+.05,a.y-.55,a.z),V(a.x+.05,a.y+.55,a.z),.004,.004,pm(0xD8D0B8))}
+ else if(w!="none"){seg(g,V(a.x-.05,a.y-.55,a.z),V(a.x+.15,a.y+1.05,a.z),.018,.018,pm(0x6A5A3A,{roughness:.8}));part(g,coneG(4),MET(0xA8B4B0),a.x+.165,a.y+1.17,a.z,.035,.16,.012,0,0,-.12)}
+ return 2.1}};
 FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,sahuagin:.46},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
