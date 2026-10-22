@@ -390,12 +390,28 @@ sahuagin:(g,c,t)=>{/* sahuagin: scaly blue-green fish-man, fin crest, big black 
  const w=t&&t.wpn,a=h.hand;
  if(w=="bow"){tube([V(a.x+.05,a.y-.55,a.z),V(a.x+.22,a.y,a.z),V(a.x+.05,a.y+.55,a.z)],.02,.014,pm(0x5A4028,{roughness:.8}),g);seg(g,V(a.x+.05,a.y-.55,a.z),V(a.x+.05,a.y+.55,a.z),.004,.004,pm(0xD8D0B8))}
  else if(w!="none"){seg(g,V(a.x-.05,a.y-.55,a.z),V(a.x+.15,a.y+1.05,a.z),.018,.018,pm(0x6A5A3A,{roughness:.8}));part(g,coneG(4),MET(0xA8B4B0),a.x+.165,a.y+1.17,a.z,.035,.16,.012,0,0,-.12)}
+ return 2.1},
+armor:(g,c,t)=>{/* animated armour: empty steel plate suit, closed helm with glowing slit, pauldrons, longsword; skin:0xcolor for steel tint */const st=(t&&t.skin)||0x8A8E96,MT={metalness:.82,roughness:.3},h=HUM(g,{H:1.95,bulk:1.06,skin:st,top:st,topM:MT,bottom:0x5E6268,boots:0x4E5258,sleeve:st,sleeveM:MT,forearm:0x6E7278,glove:0x5E6268}),y=h.head.y,b=h.b,hs=h.hs,M1=MET(st),DK=pm(0x0A0C10,{roughness:.5}),GL=pm(0x70D0FF,{em:0x3090FF,ei:2.2});
+ part(g,sphG(),M1,.005,y+.01,0,.118*hs,.138*hs,.11*hs);part(g,boxG(),DK,.112*hs,y+.005,0,.02,.026,.13);
+ [-1,1].forEach(s=>part(g,sphG(),GL,.122*hs,y+.005,s*.034,.013));part(g,boxG(),M1,-.01,y+.14*hs,0,.16,.03,.018);
+ [-1,1].forEach(s=>part(g,hemiG(),M1,0,h.Y(1.38),s*.21*b,.12*b,.1,.13*b,0,0,s*-.35));
+ part(g,lat([[0,0],[.16,0],[.2,.2],[.21,.42],[.16,.5],[0,.52]].map(p=>[p[0]*b,p[1]*h.k])),M1,0,h.Y(.95),0,1).scale.set(.8,1,1.04);
+ part(g,cylG(),MET(0x3A3C40),0,h.Y(.97),0,.13*b,.06,.17*b);
+ const hl=halo(0x4A9AFF,.5);hl.position.set(.12*hs,y,0);g.add(hl);
+ blade(g,h.hand,V(.3,1,0),.85,.045,MET(0xD0D6DC));return 2.15},
+myrmidon:(g,c,t)=>{/* elemental myrmidon: helmed warrior whose body is an element, floating on a tapering swirl; el:"fire"(default)|"water"|"air"|"earth" */const E={fire:[0xE8602A,0xFF4A10],water:[0x3A8AD0,0x1A5AA0],air:[0xD0E2EE,0x8AB0D0],earth:[0x7A6248,0x3A2A18]}[(t&&t.el)||"fire"]||[0xE8602A,0xFF4A10],EL=pm(E[0],{roughness:.45,em:E[1],ei:t&&t.el=="earth"?.2:1.1}),h=HUM(g,{H:1.9,bulk:1.05,skin:E[0],top:E[0],topM:{em:E[1],ei:t&&t.el=="earth"?.2:1.1},bottom:E[0],sleeve:E[0],sleeveM:{em:E[1],ei:t&&t.el=="earth"?.2:1.1},noLegs:true,eye:0xFFF6D0,eyeE:0xFFE080}),y=h.head.y,b=h.b,hs=h.hs,BR=MET(0xA8844A);
+ part(g,lat([[0,0],[.02,0],[.08,.25],[.14,.55],[.17,.78],[.12,.86],[0,.88]].map(p=>[p[0]*b,p[1]*h.k])),EL,0,h.Y(.1),0,1);
+ [[.12,.45,.14],[-.1,.3,-.12],[.05,.62,-.16],[-.08,.7,.15]].forEach(p=>part(g,sphG(),EL,p[0],h.Y(p[1]),p[2],.05));
+ part(g,sphG(),BR,.005,y+.02,0,.115*hs,.12*hs,.105*hs);part(g,boxG(),BR,-.01,y+.13*hs,0,.18,.06,.02);part(g,boxG(),pm(0x1A1410),.11*hs,y-.01,0,.02,.03,.11);
+ [-1,1].forEach(s=>part(g,hemiG(),BR,0,h.Y(1.38),s*.21*b,.11*b,.09,.12*b,0,0,s*-.35));
+ const hl=halo(E[0],1.2);hl.position.set(0,h.Y(1.0),0);g.add(hl);
+ const a=h.hand;seg(g,V(a.x-.05,a.y-.6,a.z),V(a.x+.15,a.y+1.0,a.z),.018,.018,pm(0x5A4A30,{roughness:.8}));part(g,coneG(4),BR,a.x+.165,a.y+1.12,a.z,.035,.16,.012,0,0,-.12);
  return 2.1}};
 FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,sahuagin:.46},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,sahuagin:.46,armor:.47,myrmidon:.44},SZ={imp:1.3,brain:1.2};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
