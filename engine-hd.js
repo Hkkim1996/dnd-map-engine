@@ -406,21 +406,52 @@ myrmidon:(g,c,t)=>{/* elemental myrmidon: helmed warrior whose body is an elemen
  [-1,1].forEach(s=>part(g,hemiG(),BR,0,h.Y(1.38),s*.21*b,.11*b,.09,.12*b,0,0,s*-.35));
  const hl=halo(E[0],1.2);hl.position.set(0,h.Y(1.0),0);g.add(hl);
  const a=h.hand;seg(g,V(a.x-.05,a.y-.6,a.z),V(a.x+.15,a.y+1.0,a.z),.018,.018,pm(0x5A4A30,{roughness:.8}));part(g,coneG(4),BR,a.x+.165,a.y+1.12,a.z,.035,.16,.012,0,0,-.12);
- return 2.1}};
+ return 2.1},
+ignis:(g,c,t)=>{/* Ignis: half-elf woman, dark star-stitched robe, red-orange dragon scale marks on neck and forearms, scale pendant, wooden staff with a silver crown; hair:0xcolor, robe:0xcolor, fire:1 staff glows, ward:1 translucent red scale-ward dome */const RB=(t&&t.robe)||0x1C2140,SK=(t&&t.skin)||0xEBCFBE,HC=(t&&t.hair)||0x3A2018,h=HUM(g,{H:1.74,bulk:.86,skin:SK,top:RB,bottom:0x4A1E1E,sleeve:RB,forearm:SK,robe:true,eye:0x2A1A14}),y=h.head.y,b=h.b,SC=pm(0xC0281C,{roughness:.4,em:0x7A1400,ei:.6}),ST=pm(0xEEF2FF,{em:0xB8C8FF,ei:1.4});
+ [-1,1].forEach(s=>part(g,coneG(4),h.S,-.01,y+.02,s*.09,.014,.07,.02,s*1.3,0,.5));
+ hair(g,h,HC,{tilt:.42});tube([V(-.08,y+.06,0),V(-.13,y-.1,0),V(-.14,y-.4,0)],.065,.03,pm(HC,{roughness:.8}),g);
+ [[.04,1.47,.035],[.035,1.51,-.03],[.03,1.43,-.04]].forEach(p=>part(g,sphG(),SC,p[0],h.Y(p[1]),p[2],.018,.012,.02));
+ part(g,sphG(),pm(0xB0201A,{em:0xFF4010,ei:1.2,roughness:.3}),.1*b,h.Y(1.33),0,.02,.03,.025);
+ const el=[V(.03,h.Y(1.12),-.25*b),V(.06,h.Y(1.13),.25*b)],hd=[h.handL,h.hand];
+ [0,1].forEach(i=>[.3,.55,.8].forEach((q,j)=>{const p=el[i].clone().lerp(hd[i],q);part(g,sphG(),SC,p.x+.025,p.y+.01,p.z+(j%2?.012:-.012),.02,.013,.017)}));
+ [[.14,1.2,.06],[.13,1.05,-.08],[.17,.72,.08],[.19,.45,-.06],[.22,.22,.1],[0,.6,.21],[0,.35,-.24],[-.17,.5,.08]].forEach(p=>part(g,sphG(),ST,p[0]*b,h.Y(p[1]),p[2]*b,.009));
+ const a=h.hand,tp=V(a.x+.05,h.Y(2.0),a.z+.05),SV=MET(0xD8DCE4),fire=t&&t.fire;seg(g,V(a.x,.02,a.z+.05),tp,.02,.017,pm(0x6A4A2E,{roughness:.75}));
+ part(g,new T3.TorusGeometry(.055,.012,6,14),SV,tp.x,tp.y+.02,tp.z,1,1,1,PI/2,0,0);
+ [0,1,2,3,4,5].forEach(i=>{const an=i*PI/3,cx=Math.cos(an),cz=Math.sin(an);part(g,coneG(4),SV,tp.x+cx*.05,tp.y+.08,tp.z+cz*.05,.012,.09,.012,cz*.35,0,-cx*.35)});
+ part(g,sphG(),pm(0xF0D8C0,{em:fire?0xFF5010:0x806040,ei:fire?1.6:.3,roughness:.3}),tp.x,tp.y+.08,tp.z,.035);
+ if(fire){const hl=halo(0xFF6A20,.9);hl.position.set(tp.x,tp.y+.08,tp.z);g.add(hl)}
+ if(t&&t.ward){const w=part(g,sphG(),pm(0xE0402A,{em:0xFF3010,ei:.5,transparent:true,opacity:.12,depthWrite:false,side:T3.DoubleSide}),0,h.Y(1.0),0,.85,1.1,.85);w.userData.ns=1;const wh=halo(0xFF4020,.9);wh.material.opacity=.35;wh.position.set(0,h.Y(1.0),0);g.add(wh)}
+ return 2.2},
+goblin:(g,c,t)=>{/* goblin: small grey-green humanoid, big sideways ears, flat nose, yellow eyes, leather jerkin, quiver; wpn:"bow"(default)|"blade"(scimitar)|"none", skin:0xcolor */const h=HUM(g,{H:1.05,bulk:.78,skin:(t&&t.skin)||0x7A8A5A,top:0x5A4630,topM:{tex:"leather",bs:.008},bottom:0x3E3226,boots:0x2A2018,headS:1.35,eye:0xE8C030,eyeE:0x6A5000}),y=h.head.y,hs=h.hs;
+ [-1,1].forEach(s=>part(g,coneG(4),h.S,-.01,y+.02,s*.12*hs,.03,.2,.05,s*1.5,0,.15));
+ part(g,sphG(),h.S,.1*hs,y-.02,0,.03,.025,.035);
+ [-1,1].forEach(s=>part(g,coneG(4),pm(0xE8E0C0,{roughness:.4}),.1*hs,y-.065,s*.02,.006,.02,.006,PI,0,0));
+ part(g,cylG(),pm(0x4A3424,{roughness:.8}),-.1,h.Y(1.15),.05,.035,.3,.035,.3,0,0);
+ const w=t&&t.wpn,a=h.hand;
+ if(w=="blade")blade(g,a,V(.4,1,0),.4,.04,MET(0xB8BEC4));
+ else if(w!="none"){tube([V(a.x+.04,a.y-.4,a.z),V(a.x+.16,a.y,a.z),V(a.x+.04,a.y+.4,a.z)],.014,.01,pm(0x5A4028,{roughness:.8}),g);seg(g,V(a.x+.04,a.y-.4,a.z),V(a.x+.04,a.y+.4,a.z),.003,.003,pm(0xD8D0B8))}
+ return 1.25},
+ox:(g,c,t)=>{/* four-legged beast: ox (default, horns) or horse:1 (long neck, mane, tail); skin:0xcolor; lie:1 lays it on its side */const hr=t&&t.horse,fr=pm((t&&t.skin)||(hr?0x6A4A30:0x8A6A40),{roughness:.9}),dk=pm(0x2A1E16,{roughness:.8}),hn=pm(0xD8CCB0,{roughness:.5});
+ const LY=hr?.85:.62,BY=hr?1.05:.82;
+ [[.5,.2],[.5,-.2],[-.5,.2],[-.5,-.2]].forEach(([x,z])=>{seg(g,V(x,LY,z),V(x,.08,z),hr?.06:.1,hr?.045:.08,fr);part(g,cylG(),dk,x,.05,z,hr?.055:.085,.1,hr?.055:.085)});
+ part(g,sphG(),fr,0,BY,0,hr?.7:.8,hr?.33:.4,hr?.26:.38);
+ if(hr){seg(g,V(.55,1.15,0),V(.85,1.55,0),.15,.1,fr);part(g,sphG(),fr,1.0,1.5,0,.24,.1,.1,0,0,-.5);tube([V(.5,1.3,0),V(.7,1.55,0),V(.85,1.7,0)],.04,.025,dk,g);tube([V(-.68,1.1,0),V(-.85,.9,0),V(-.9,.55,0)],.05,.02,dk,g)}
+ else{part(g,sphG(),fr,.62,.95,0,.3,.28,.3);part(g,sphG(),fr,.9,.86,0,.22,.2,.19);part(g,sphG(),pm(0xC8A890,{roughness:.8}),1.08,.78,0,.12,.1,.13);[-1,1].forEach(s=>{part(g,coneG(6),hn,.88,1.02,s*.17,.03,.16,.03,s*-.9,0,0);part(g,sphG(),fr,.82,.94,s*.2,.07,.04,.06)});tube([V(-.78,.95,0),V(-.86,.65,0),V(-.88,.3,0)],.03,.015,fr,g)}
+ return hr?1.7:1.2}};
 FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,sahuagin:.46,armor:.47,myrmidon:.44},SZ={imp:1.3,brain:1.2};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,sahuagin:.46,armor:.47,myrmidon:.44,ignis:.42,goblin:.3,ox:.9},SZ={imp:1.3,brain:1.2},Q4={ox:1};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
  const h=FIG[m](body,col_,t)||1.8;body.scale.setScalar(sz);hold.add(body);g.add(hold);
- if(t.lie){body.rotation.z=PI/2;body.position.set(h*sz/2,.22*sz,0)}else{const R=(RR[m]||.42)*sz;
+ if(t.lie){if(Q4[m]){body.rotation.x=PI/2;body.position.set(0,.34*sz,-.95*sz)}else{body.rotation.z=PI/2;body.position.set(h*sz/2,.22*sz,0)}}else{const R=(RR[m]||.42)*sz;
   const bs=new T3.Mesh(new T3.CylinderGeometry(R,R*1.06,.05*sz,SEG*2),BASE);bs.position.y=.025*sz;bs.receiveShadow=bs.castShadow=true;g.add(bs);body.position.y=.05*sz;
   const ring=new T3.Mesh(new T3.TorusGeometry(R*1.02,.022*Math.max(1,sz),6,SEG*2),pm(col_,{em:col_,ei:.6,roughness:.4}));ring.rotation.x=PI/2;ring.position.y=.05*sz;g.add(ring)}
  let a=0;if(t.f!=null)a=-t.f*PI/180;else if(sd(t)){let bb=1e9;TK.forEach(u=>{if(sd(u)==-sd(t)){const dx=u.x-t.x,dy=u.y-t.y,dd=dx*dx+dy*dy;if(dd<bb){bb=dd;a=Math.atan2(-dy,dx)}}})}hold.rotation.y=a;
- g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.position.set(t.x,z,t.y);sc.add(g);if(t.n)labels.push([t.x,z+(t.lie?.7:h*sz+.25),t.y,t.n,col_])}catch(e){console&&console.warn&&console.warn("token",t,e)}});
+ g.traverse(o=>{if(o.isMesh){o.castShadow=!o.userData.ns;o.receiveShadow=true}});g.position.set(t.x,z,t.y);sc.add(g);if(t.n)labels.push([t.x,z+(t.lie?.7:h*sz+.25),t.y,t.n,col_])}catch(e){console&&console.warn&&console.warn("token",t,e)}});
 
 /* ---------- lights & camera ---------- */
 sc.add(new T3.HemisphereLight(col(MD.sky),col(MD.gnd),MD.hi));
