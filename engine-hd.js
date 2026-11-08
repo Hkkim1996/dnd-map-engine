@@ -447,6 +447,17 @@ wolf:(g,c,t)=>{/* wolf: lean grey four-legged beast, pointed ears, long snout, b
  [-1,1].forEach(s=>{part(g,coneG(4),fr,.6,.98,s*.07,.04,.12,.03);part(g,sphG(),ey,.76,.87,s*.07,.016);part(g,coneG(4),hn,.86,.72,s*.035,.006,.025,.006,PI,0,0)});
  tube([V(-.52,.6,0),V(-.74,.5,0),V(-.86,.3,0)],.065,.02,fr,g);
  return 1.1},
+warg:(g,c,t)=>FIG.wolf(g,c,Object.assign({skin:0x3A3230},t||{})),
+silvana:(g,c,t)=>{/* Silvana: half-elf woman ranger, open leather corset vest, bare arms, short leather skirt, knee boots, longbow and quiver on back, two shortswords at the hips; hair:0xcolor, skin:0xcolor, hawk:1 hawk on the shoulder */const SK=(t&&t.skin)||0xE6C4A8,HC=(t&&t.hair)||0x6A3A20,h=HUM(g,{H:1.72,bulk:.82,skin:SK,top:0x5A3A22,topM:{tex:"leather",bs:.008},bottom:SK,boots:0x3A2618,sleeve:null,eye:0x2A5A3A}),y=h.head.y,b=h.b,BW=pm(0x9A7A4E,{roughness:.6}),LM=pm(0x4A3020,{tex:"leather",bs:.008,roughness:.8});
+ [-1,1].forEach(s=>part(g,coneG(4),h.S,-.01,y+.02,s*.09,.014,.07,.02,s*1.3,0,.5));
+ hair(g,h,HC,{tilt:.42});tube([V(-.08,y+.06,0),V(-.13,y-.12,0),V(-.13,y-.36,0)],.06,.025,pm(HC,{roughness:.8}),g);
+ part(g,sphG(),h.S,.112*b,h.Y(1.3),0,.018,.1,.045);
+ const sk=part(g,lat([[0,0],[.25*b,0],[.21*b,.1],[.16*b,.22],[0,.22]]),LM,0,h.Y(.72),0,1);sk.scale.set(.82,1,1);
+ tube([V(-.16,h.Y(.6),.12),V(-.25,h.Y(1.15),.02),V(-.16,h.Y(1.75),-.1)],.014,.009,BW,g);seg(g,V(-.16,h.Y(.6),.12),V(-.16,h.Y(1.75),-.1),.003,.003,pm(0xD8D0B8));
+ part(g,cylG(),LM,-.17,h.Y(1.2),-.08,.04,.36,.04,.25,0,0);[-.02,.02].forEach(d=>part(g,coneG(4),pm(0xE8E0C8,{roughness:.8}),-.17,h.Y(1.42),-.13+d,.012,.06,.02));
+ [-1,1].forEach(s=>{const zz=s*.19*b;seg(g,V(.02,h.Y(.95),zz),V(-.12,h.Y(.56),zz*1.1),.02,.014,LM);seg(g,V(.02,h.Y(.95),zz),V(.07,h.Y(1.06),zz*.95),.014,.014,pm(0x2A1A10,{roughness:.8}))});
+ if(t&&t.hawk){const sy=h.Y(1.42),z=-.2*b,F=pm(0x6A4A2E,{roughness:.9}),P=pm(0xD8C8A8,{roughness:.9});part(g,sphG(),F,0,sy+.09,z,.055,.07,.04);part(g,sphG(),P,.03,sy+.08,z,.03,.05,.03);part(g,sphG(),F,.03,sy+.17,z,.034);part(g,coneG(4),pm(0xE0B030,{roughness:.5}),.07,sy+.165,z,.01,.03,.01,0,0,-1.5);[-1,1].forEach(s=>part(g,sphG(),F,-.03,sy+.08,z+s*.04,.06,.03,.016,0,0,.5));}
+ return 2.1},
 ox:(g,c,t)=>{/* four-legged beast: ox (default, horns) or horse:1 (long neck, mane, tail); skin:0xcolor; lie:1 lays it on its side */const hr=t&&t.horse,fr=pm((t&&t.skin)||(hr?0x6A4A30:0x8A6A40),{roughness:.9}),dk=pm(0x2A1E16,{roughness:.8}),hn=pm(0xD8CCB0,{roughness:.5});
  const LY=hr?.85:.62,BY=hr?1.05:.82;
  [[.5,.2],[.5,-.2],[-.5,.2],[-.5,-.2]].forEach(([x,z])=>{seg(g,V(x,LY,z),V(x,.08,z),hr?.06:.1,hr?.045:.08,fr);part(g,cylG(),dk,x,.05,z,hr?.055:.085,.1,hr?.055:.085)});
@@ -458,7 +469,7 @@ FIG.bulk=FIG.orc;
 
 /* ---------- tokens ---------- */
 const T={me:0x1D9E75,ally:0x378ADD,foe:0xE24B4A,npc:0x888780,odd:0x7F77DD};
-const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,sahuagin:.46,armor:.47,myrmidon:.44,ignis:.42,goblin:.3,bugbear:.58,wolf:.55,ox:.9},SZ={imp:1.3,brain:1.2},Q4={ox:1,wolf:1};
+const RR={pawn:.42,orc:.55,gith:.46,halfelf:.42,human:.42,paleelf:.42,wizard:.44,tiefling:.42,gnome:.3,ogre:.78,bear:.95,drow:.42,fist:.44,doppel:.42,eye:.3,brain:.55,imp:.32,mindflayer:.48,cambion:.62,sahuagin:.46,armor:.47,myrmidon:.44,ignis:.42,goblin:.3,bugbear:.58,wolf:.55,warg:.55,silvana:.42,ox:.9},SZ={imp:1.3,brain:1.2,warg:1.4},Q4={ox:1,wolf:1,warg:1};
 const TK=(M.tokens||[]).filter(Boolean),sd=t=>t.t=="foe"?1:t.t=="npc"?0:-1,BASE=pm(0x2E2B28,{roughness:.6,metalness:.2});
 POST.forEach(f=>{try{f()}catch(e){console&&console.warn&&console.warn("post",e)}});
 TK.forEach(t=>{try{const col_=T[t.t]||T.npc,m=FIG[t.m]?t.m:"pawn",sz=(t.s||SZ[m]||1)*(M.ts||1),z=t.z!=null?t.z:heightAt(t.x,t.y),g=new T3.Group(),body=new T3.Group(),hold=new T3.Group();
