@@ -261,10 +261,10 @@ const blade=(g,a,dir,len,w,m,guard)=>{const d=dir.clone().normalize(),q=new T3.Q
 const MET=c=>pm(c,{metalness:.8,roughness:.32});
 const FIG={
 pawn:(g,c)=>{const m=pm(c,{roughness:.45,metalness:.1});part(g,lat([[0,0],[.3,0],[.3,.08],[.2,.14],[.13,.5],[.18,.62],[.12,.7],[0,.7]]),m,0,0,0,1);part(g,sphG(),m,0,.84,0,.17);return 1.05},
-orc:g=>{const h=HUM(g,{H:2.0,bulk:1.32,skin:0x72905A,top:0x6B4A2E,topM:{tex:"leather",bs:.01},bottom:0x4A3526,boots:0x2A1E16,sleeve:null,forearm:0x5A3A22}),HR=pm(0x17120F,{roughness:.9}),b=h.b,y=h.head.y,L=pm(0x5A3E26,{tex:"leather",bs:.01,roughness:.75});
+orc:(g,c,o)=>{/* plate:1 = orog in heavy plate with helmet */const P=o&&o.plate,PM={metalness:.75,roughness:.35},h=HUM(g,{H:2.0,bulk:1.32,skin:(o&&o.skin)||0x72905A,top:P?0x6A6E74:0x6B4A2E,topM:P?PM:{tex:"leather",bs:.01},bottom:P?0x4A4E54:0x4A3526,boots:0x2A1E16,sleeve:P?0x5A5E64:null,sleeveM:P?PM:null,forearm:0x5A3A22}),HR=pm(0x17120F,{roughness:.9}),b=h.b,y=h.head.y,L=pm(0x5A3E26,{tex:"leather",bs:.01,roughness:.75});
  part(g,cylG(),pm(0x2E2014,{roughness:.6}),0,h.Y(.97),0,.12*b,.07,.165*b);part(g,boxG(),MET(0x9A8A60),.12*b,h.Y(.97),0,.02,.06,.07);
  [-1,1].forEach(s=>part(g,hemiG(),L,0,h.Y(1.37),s*.2*b,.1*b,.08,.11*b,0,0,s*-.35));
- hair(g,h,0x17120F,{tilt:.55});part(g,sphG(),HR,-.02,y+.13,0,.055);part(g,cylG(),pm(0x6A4A2A),-.02,y+.085,0,.03,.03,.03);
+ if(P){const HM=MET(0x5A5E64);part(g,hemiG(),HM,-.005,y+.015,0,.135*h.hs,.15*h.hs,.13*h.hs);part(g,boxG(),HM,.115*h.hs,y+.03,0,.02,.03,.1*h.hs);[-1,1].forEach(s=>part(g,hemiG(),MET(0x6A6E74),0,h.Y(1.37),s*.21*b,.12*b,.09,.12*b,0,0,s*-.35))}else{hair(g,h,0x17120F,{tilt:.55});part(g,sphG(),HR,-.02,y+.13,0,.055);part(g,cylG(),pm(0x6A4A2A),-.02,y+.085,0,.03,.03,.03)}
  const bd=part(g,lat([[0,.02],[.085,.02],[.1,-.05],[.075,-.14],[.03,-.2],[0,-.21]]),HR,.04,y-.02,0,1);bd.scale.set(.85,1,1.05);bd.rotation.z=.22;
  part(g,boxG(),HR,.105,y-.035,0,.02,.02,.11);
  [-1,1].forEach(s=>part(g,coneG(6),pm(0xEEE6CC,{roughness:.4}),.105,y-.02,s*.042,.012,.05,.012,0,0,-.2));
